@@ -3,6 +3,9 @@ import argparse
 from subprocess import call
 from subprocess import Popen
 import os
+from mm6.Locators import APIdata_MancalaQuest
+
+A = APIdata_MancalaQuest
 
 fileName_fs = 'mm5/' + 'test_mm5_free_spins.py'
 fileName_basic = 'mm5/' + 'test_mm5_basic_game.py'
@@ -50,10 +53,24 @@ if namespace.command == "mm5":
         print("Что-то пошло не так...")
 
 elif namespace.command == "mm6":
+    print('using', sys.argv[0])
     print(namespace)
+    print(f'strategy = {namespace.strategy}')
     print(f'sessions = {namespace.sessions}')
     print(f'rounds = {namespace.rounds}')
-    call(["python", "main2.py"])
+
+    if namespace.strategy == 'fs':
+        os.system(f'python {A.fileName_fs} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'basic':
+        os.system(f'python {A.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'replace':
+        os.system(f'python {A.fileName_replace} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    else:
+        print("Что-то пошло не так...")
 
 else:
     print("Что-то пошло не так...")
+    # call(["python", "main2.py"])

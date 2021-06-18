@@ -36,7 +36,7 @@ FS_collected_winnings.clear()
 
 def gameParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sessions', type=int, default=3)
+    parser.add_argument('--sessions', type=int, default=2)
     parser.add_argument('--rounds', type=int, default=5)
     return parser
 
@@ -65,9 +65,9 @@ while r < sessions:  # выставляем количество раундов 
 
     while i < rounds:  # выставляем количество спинов (вращений)
         print2('\n')
-        print2('spin # %s' % str(i + 1))
+        print('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % A.userID)
         creditDebit, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)  # ставка ! CreditDebit # resultId = tokenAsync
-        getAsyncResponse, resultId, spinId, totalFreeSpinsCount, printAR = api.GetAsyncResponse(regToken, tokenAsync)  # асинхронный ответ ! GetAsyncResponse
+        getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR = api.GetAsyncResponse(regToken, tokenAsync)  # асинхронный ответ ! GetAsyncResponse
         print2(str(getAsyncResponse))
         printAR(coin)
 

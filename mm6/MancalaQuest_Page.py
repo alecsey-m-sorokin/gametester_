@@ -211,10 +211,12 @@ class API_MancalaQuest:
             resultId = response['ResultId']
             spinId = response["SpinResult"]["Id"]
             totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
+            remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
             print("Response =", response)
             print("ResultId =", resultId)
             print("SpinId =", spinId)
             print("TotalFreeSpinsCount =", totalFreeSpinsCount)
+            print("RemainingFreeSpinsCount =", remainingFreeSpinsCount)
 
         def printAR(coin):
             betSum = response["BetSum"]
@@ -229,7 +231,7 @@ class API_MancalaQuest:
                 '---------------------------------------------------------------------------------------------------------')
 
         # response_GetAsyncResponse.close()
-        return response, resultId, spinId, totalFreeSpinsCount, printAR
+        return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR
 
     @staticmethod
     def GetMancalaQuestGameState(RegToken, ResultId, BonusGameId, SpinId):

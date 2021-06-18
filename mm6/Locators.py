@@ -22,95 +22,6 @@ bets = [
 ]
 
 
-class APIdata_xLine:
-    DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
-    DOMAIN = 'https://test-games-api.carhenge.space'
-
-    gameURL = 'https://test-games-api.carhenge.space/'
-    frontURL = 'https://stest.zhdun.space/'
-    partnerURL = 'https://test-partners-api.carhenge.space/'
-
-    AuthorizationGame_Url = '/auth/AuthorizationGame'
-    GetSlotInfo_Url = '/games/GetSlotInfo'
-    CreditDebit_Url = '/games/CreditDebit'
-    GetAsyncResponse_Url = '/games/GetAsyncResponse'
-    FreeSpin_Url = '/games/FreeSpin'
-
-    partnerID = '360'
-    gameID = '9006'
-    # userID = '422021'
-    userID = '0'
-    currency = 'EUR'
-    gameKey = 'TestKey'
-    betSum = '1'
-    cntLineBet = '15'
-    # TokenAsync = ''
-    TokenAsync_2 = ''
-    CardIndex = '2'
-    mobile_platform = '&MobilePlatform=false'
-    # query = 'gameURL=' + gameURL + '&frontURL=' + frontURL + '&partnerURL=' + partnerURL + '&partnerId' + partnerID + '&gameID' + gameID + '&userID' + userID + '&currency' + currency
-
-
-class DOM:
-    DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
-    DOMAIN = 'https://test-games-api.carhenge.space'
-
-    gameURL = 'https://test-games-api.carhenge.space/'
-    frontURL = 'https://stest.zhdun.space/'
-    partnerURL = 'https://test-partners-api.carhenge.space/'
-
-    AuthorizationGame_Url = '/auth/AuthorizationGame'
-    GetSlotInfo_Url = '/games/GetSlotInfo'
-    CreditDebit_Url = '/games/CreditDebit'
-    GetAsyncResponse_Url = '/games/GetAsyncResponse'
-    FreeSpin_Url = '/games/FreeSpin'
-
-
-class APIdata:
-    partnerID = '360'
-    gameID = '9006'
-    # userID = '422021'
-    userID = '0'
-    currency = 'EUR'
-    gameKey = 'TestKey'
-    betSum = '1'
-    cntLineBet = '15'
-    # TokenAsync = ''
-    TokenAsync_2 = ''
-    CardIndex = '2'
-    mobile_platform = '&MobilePlatform=false'
-    # query = 'gameURL=' + gameURL + '&frontURL=' + frontURL + '&partnerURL=' + partnerURL + '&partnerId' + partnerID + '&gameID' + gameID + '&userID' + userID + '&currency' + currency
-
-class DOM_PortalMaster:
-    DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
-    DOMAIN = 'https://test-games-api.carhenge.space'
-
-    gameURL = 'https://test-games-api.carhenge.space/'
-    frontURL = 'https://stest.zhdun.space/'
-    partnerURL = 'https://test-partners-api.carhenge.space/'
-
-    AuthorizationGame_Url = '/auth/AuthorizationGame'
-    GetSlotInfo_Url = '/games/GetSlotInfo'
-    CreditDebit_Url = '/games/CreditDebit'
-    GetAsyncResponse_Url = '/games/GetAsyncResponse'
-    FreeSpin_Url = '/games/FreeSpin'
-
-class APIdata_PortalMaster:
-    partnerID = '382'
-    gameID = '18001'
-    userID = '354'
-    # userID = '422021'
-    # userID = '2404053'
-    currency = 'EUR'
-    gameKey = 'TestKey'
-    betSum = '1'
-    cntLineBet = '10'
-    # TokenAsync = ''
-    TokenAsync_2 = ''
-    CardIndex = '2'
-    mobile_platform = '&MobilePlatform=false'
-
-
 class APIdata_MancalaQuest:
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
     DOMAIN = 'https://test-games-api.carhenge.space'
@@ -132,7 +43,7 @@ class APIdata_MancalaQuest:
 
     partnerID = '360'
     gameID = '19001'
-    userID = '54234'
+    userID = '55555'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'
@@ -142,7 +53,9 @@ class APIdata_MancalaQuest:
     CardIndex = '2'
     mobile_platform = '&MobilePlatform=false'
 
-
+    fileName_fs = 'mm6/' + ''
+    fileName_basic = 'mm6/' + 'test_mm6_basic_game.py'
+    fileName_replace = 'mm6/' + ''
 
 
 
