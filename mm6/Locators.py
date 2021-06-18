@@ -52,6 +52,7 @@ class APIdata_MancalaQuest:
     TokenAsync_2 = ''
     CardIndex = '2'
     mobile_platform = '&MobilePlatform=false'
+    mm6_bonus = '&highfrequencybonus=true'
 
     fileName_fs = 'mm6/' + ''
     fileName_basic = 'mm6/' + 'test_mm6_basic_game.py'

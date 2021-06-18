@@ -217,6 +217,22 @@ class API_MancalaQuest:
             print("SpinId =", spinId)
             print("TotalFreeSpinsCount =", totalFreeSpinsCount)
             print("RemainingFreeSpinsCount =", remainingFreeSpinsCount)
+            # userSavedState = response["SpinResult"]["UserSavedCurrentState"]
+            # if response["SpinResult"]["UserSavedCurrentState"]["StepOpponentContracts"][1]["WinStateInfo"] is None:
+            if 'UserSavedCurrentState' not in response["SpinResult"]:
+                FreeSpinCount = 0
+                Multiplier = 0
+                WinState = 0
+            else:
+                # FreeSpinCount = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["FreeSpinCount"]
+                # Multiplier = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["Multiplier"]
+                # WinState = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["WinState"]
+                print('USCS : ', response["SpinResult"]["UserSavedCurrentState"])
+                print(response["SpinResult"]["UserSavedCurrentState"]["StepOpponentContracts"])
+                print(response["SpinResult"]["UserSavedCurrentState"]["StepPlayerContracts"])
+                FreeSpinCount = 1
+                Multiplier = 1
+                WinState = 1
 
         def printAR(coin):
             betSum = response["BetSum"]
@@ -230,8 +246,14 @@ class API_MancalaQuest:
             print(
                 '---------------------------------------------------------------------------------------------------------')
 
-        # response_GetAsyncResponse.close()
-        return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR
+        def printBonusInfo():
+            print('---WinStateInfo : ---------------------------------------------------------------------------------------')
+            print(response["SpinResult"])
+            print(f'FreeSpinCount : {FreeSpinCount} Multiplier : {Multiplier} WinState : {WinState}')
+            print('---------------------------------------------------------------------------------------------------------')
+
+            # response_GetAsyncResponse.close()
+        return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, printBonusInfo
 
     @staticmethod
     def GetMancalaQuestGameState(RegToken, ResultId, BonusGameId, SpinId):
