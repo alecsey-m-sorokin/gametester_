@@ -36,6 +36,7 @@ FS_collected_winnings.clear()
 
 def gameParser():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
     parser.add_argument('--rounds', type=int, default=5)
     return parser
@@ -51,8 +52,8 @@ dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
 
 while r < sessions:  # выставляем количество раундов (сессий)
-    fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
-    log = Logger(fileName, toFile=True, toConsole=True)
+    fileName = 'mm6/logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
+    log = Logger(fileName, toFile=False, toConsole=True)
     print2 = log.printml
     print2('\n')
     print2('round # %s' % str(r + 1))

@@ -23,8 +23,9 @@ def gameParser():
     mm5.add_argument('--rounds', type=int, default=10)
 
     mm6 = subparsers.add_parser('mm6')
+    mm6.add_argument('--strategy', default='basic')
     mm6.add_argument('--sessions', type=int, default=1)
-    mm6.add_argument('--rounds', type=int, default=5)
+    mm6.add_argument('--rounds', type=int, default=10)
 
     return parser
 
@@ -64,9 +65,6 @@ elif namespace.command == "mm6":
 
     elif namespace.strategy == 'basic':
         os.system(f'python {A.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
-
-    elif namespace.strategy == 'replace':
-        os.system(f'python {A.fileName_replace} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
 
     else:
         print("Что-то пошло не так...")
