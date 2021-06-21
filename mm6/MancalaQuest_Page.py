@@ -219,7 +219,7 @@ class API_MancalaQuest:
             print("RemainingFreeSpinsCount =", remainingFreeSpinsCount)
             # userSavedState = response["SpinResult"]["UserSavedCurrentState"]
             # if response["SpinResult"]["UserSavedCurrentState"]["StepOpponentContracts"][1]["WinStateInfo"] is None:
-            if 'UserSavedCurrentState' not in response["SpinResult"]:
+            if 'UserSavedState' not in response["SpinResult"]:
                 FreeSpinCount = 0
                 Multiplier = 0
                 WinState = 0
@@ -227,9 +227,9 @@ class API_MancalaQuest:
                 # FreeSpinCount = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["FreeSpinCount"]
                 # Multiplier = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["Multiplier"]
                 # WinState = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["WinState"]
-                print('USCS : ', response["SpinResult"]["UserSavedCurrentState"])
-                print(response["SpinResult"]["UserSavedCurrentState"]["StepOpponentContracts"])
-                print(response["SpinResult"]["UserSavedCurrentState"]["StepPlayerContracts"])
+                print('USCS : ', response["SpinResult"]["UserSavedState"])
+                print(response["SpinResult"]["UserSavedState"]["StepOpponentContracts"])
+                print(response["SpinResult"]["UserSavedState"]["StepPlayerContracts"])
                 FreeSpinCount = 1
                 Multiplier = 1
                 WinState = 1
