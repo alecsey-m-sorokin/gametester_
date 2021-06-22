@@ -17,15 +17,25 @@ def findall(v, k):
             if result is not None:
                 return result
 
-
 with open('c:/testing/response2.json') as json_file:
     data = json.load(json_file)
     data_str = json.dumps(data)
 
     results = findall(data, "WinStateInfo")
+    if results is not None:
+        print('bonus game is is finished')
+        print(type(results))
+        print(f'{results["WinState"]} {results["FreeSpinCount"]} {results["Multiplier"]}')
+    else:
+        print('bonus game is not finished yet ...')
 
-    print(results["WinState"])
-    print(results["FreeSpinCount"])
-    print(results["Multiplier"])
+
+if 'WinStateInfo' in data_str:
+    print('OK')
+    print(data_str)
+    print(data['SpinResult']['UserSavedState']['StepPlayerContracts'])
+    print(data['SpinResult']['UserSavedState']['StepOpponentContracts'])
+else:
+    print('not OK')
 
 # print(json.dumps(data, indent=2))

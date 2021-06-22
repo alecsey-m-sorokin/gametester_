@@ -52,8 +52,8 @@ dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
 
 while r < sessions:  # выставляем количество раундов (сессий)
-    fileName = 'mm6/logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
-    log = Logger(fileName, toFile=False, toConsole=True)
+    fileName = '../mm6/logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
+    log = Logger(fileName, toFile=True, toConsole=True)
     print2 = log.printml
     print2('\n')
     print2('round # %s' % str(r + 1))
@@ -66,12 +66,14 @@ while r < sessions:  # выставляем количество раундов 
 
     while i < rounds:  # выставляем количество спинов (вращений)
         print2('\n')
-        print('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % A.userID)
+        print2('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % A.userID)
         creditDebit, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)  # ставка ! CreditDebit # resultId = tokenAsync
-        getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, printBonusInfo = api.GetAsyncResponse(regToken, tokenAsync)  # асинхронный ответ ! GetAsyncResponse
+        getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, tokenAsync)  # асинхронный ответ ! GetAsyncResponse
         print2(str(getAsyncResponse))
         printAR(coin)
-        printBonusInfo()
+        if bonusGameResult:
+            print2('! you WIN !')
+            print2(bonusGameResult)
 
         if totalFreeSpinsCount:
             """

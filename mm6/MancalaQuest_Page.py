@@ -34,6 +34,31 @@ def print2file(f, target_data):
     file.write('\n')
     file.close()  # закрываем файл
 
+def findall(v, k):
+    """
+    : рекурсивный поиск - найти конкретное значение JSON по ключу
+    :param v: где ищем
+    :param k: что ищем
+    :return: results = findall(data, "WinStateInfo")
+    with open('c:/testing/response2.json') as json_file:
+        data = json.load(json_file)
+        data_str = json.dumps(data)
+    """
+    if type(v) == type({}):
+        for k1 in v:
+            if k1 == k:
+                print(v[k1])
+                return v[k1]
+            result = findall(v[k1], k)
+            if result is not None:
+                return result
+
+    if type(v) == type([]):
+        for k1 in v:
+            result = findall(k1, k)
+            if result is not None:
+                return result
+
 
 class Logger(object):
 
@@ -217,22 +242,23 @@ class API_MancalaQuest:
             print("SpinId =", spinId)
             print("TotalFreeSpinsCount =", totalFreeSpinsCount)
             print("RemainingFreeSpinsCount =", remainingFreeSpinsCount)
-            # userSavedState = response["SpinResult"]["UserSavedCurrentState"]
-            # if response["SpinResult"]["UserSavedCurrentState"]["StepOpponentContracts"][1]["WinStateInfo"] is None:
+            bonusGameResult = {}
             if 'UserSavedState' not in response["SpinResult"]:
+                print('no MASK bonus game ...')
                 FreeSpinCount = 0
                 Multiplier = 0
                 WinState = 0
             else:
-                # FreeSpinCount = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["FreeSpinCount"]
-                # Multiplier = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["Multiplier"]
-                # WinState = response["SpinResult"]["UserSavedState"]["StepOpponentContracts"][1]["WinStateInfo"]["WinState"]
-                print('USCS : ', response["SpinResult"]["UserSavedState"])
-                print(response["SpinResult"]["UserSavedState"]["StepOpponentContracts"])
-                print(response["SpinResult"]["UserSavedState"]["StepPlayerContracts"])
-                FreeSpinCount = 1
-                Multiplier = 1
-                WinState = 1
+                print('MASK bonus game !')
+                bonusGameResult = findall(response, "WinStateInfo")
+                if bonusGameResult is not None:
+                    print('bonus game is finished !')
+                    print(f'{bonusGameResult["WinState"]} {bonusGameResult["FreeSpinCount"]} {bonusGameResult["Multiplier"]}')
+                    FreeSpinCount = bonusGameResult["WinState"]
+                    Multiplier = bonusGameResult["FreeSpinCount"]
+                    WinState = bonusGameResult["Multiplier"]
+                else:
+                    print('bonus game is not finished yet ...')
 
         def printAR(coin):
             betSum = response["BetSum"]
@@ -246,14 +272,8 @@ class API_MancalaQuest:
             print(
                 '---------------------------------------------------------------------------------------------------------')
 
-        def printBonusInfo():
-            print('---WinStateInfo : ---------------------------------------------------------------------------------------')
-            print(response["SpinResult"])
-            print(f'FreeSpinCount : {FreeSpinCount} Multiplier : {Multiplier} WinState : {WinState}')
-            print('---------------------------------------------------------------------------------------------------------')
-
             # response_GetAsyncResponse.close()
-        return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, printBonusInfo
+        return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult
 
     @staticmethod
     def GetMancalaQuestGameState(RegToken, ResultId, BonusGameId, SpinId):
