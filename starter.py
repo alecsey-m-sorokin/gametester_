@@ -56,6 +56,7 @@ if namespace.command == "mm5":
 elif namespace.command == "mm6":
     print('using', sys.argv[0])
     print(namespace)
+    print(f'command = {namespace.command}')
     print(f'strategy = {namespace.strategy}')
     print(f'sessions = {namespace.sessions}')
     print(f'rounds = {namespace.rounds}')
@@ -65,6 +66,9 @@ elif namespace.command == "mm6":
 
     elif namespace.strategy == 'basic':
         os.system(f'python {A.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'rtp':
+        os.system(f'python {A.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
 
     else:
         print("Что-то пошло не так...")

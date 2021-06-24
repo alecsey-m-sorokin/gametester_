@@ -100,7 +100,7 @@ class API_MancalaQuest:
 
     @staticmethod
     def tps(userID):
-        params = {'gameURL': A.gameURL, 'frontURL': A.frontURL, 'partnerURL': A.partnerURL, 'partnerId': A.partnerID,
+        params = {'gameURL': A.gameURL, 'frontURL': A.frontURL, 'partnerURL': A.partnerURL, 'partnerId': A.partnerID_rtp,
                   'gameID': A.gameID, 'userID': userID, 'currency': A.currency}
         response = requests.get(A.DOMAIN_tps, params=params, headers={'Connection': 'close'})
         # print(response)

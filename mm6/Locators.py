@@ -42,6 +42,7 @@ class APIdata_MancalaQuest:
     MakeStep_Url = '/bonus/MakeStep'
 
     partnerID = '360'
+    partnerID_rtp = '382'
     gameID = '19001'
     userID = '55555'
     currency = 'EUR'
@@ -56,7 +57,7 @@ class APIdata_MancalaQuest:
 
     fileName_fs = 'mm6/' + ''
     fileName_basic = 'mm6/' + 'test_mm6_basic_game.py'
-    fileName_replace = 'mm6/' + ''
+    fileName_rtp = 'mm6/' + 'test_mm6_rtp.py'
 
 
 

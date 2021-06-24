@@ -50,10 +50,9 @@ rounds = namespace.rounds
 global fileName
 dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
-
 while r < sessions:  # выставляем количество раундов (сессий)
-    fileName = '../mm6/logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
-    log = Logger(fileName, toFile=True, toConsole=True)
+    fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
+    log = Logger(fileName, toFile=False, toConsole=True)
     print2 = log.printml
     print2('\n')
     print2('round # %s' % str(r + 1))
