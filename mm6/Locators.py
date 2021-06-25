@@ -41,10 +41,10 @@ class APIdata_MancalaQuest:
     SelectCharacter_Url = '/bonus/SelectCharacter'
     MakeStep_Url = '/bonus/MakeStep'
 
-    partnerID = '360'
+    partnerID = '382'
     partnerID_rtp = '382'
     gameID = '19001'
-    userID = '55555'
+    userID = '553'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'
