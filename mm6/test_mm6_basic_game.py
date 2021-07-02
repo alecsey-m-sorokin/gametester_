@@ -43,7 +43,8 @@ def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=250)
+    parser.add_argument('--rounds', type=int, default=25)
+    # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
 
@@ -57,7 +58,7 @@ dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
 while r < sessions:  # выставляем количество раундов (сессий)
     fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
-    log = Logger(fileName, toFile=True, toConsole=True)
+    log = Logger(fileName, toFile=False, toConsole=True)
     print2 = log.printml
     print2('\n')
     print2('round # %s' % str(r + 1))

@@ -15,7 +15,8 @@ from MancalaQuest_Page import API_MancalaQuest, Logger
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
 
-a = range(350, 354)
+a = range(400, 410)
+# a = range(350, 354)
 # a = range(360, 364)
 # a = range(370, 374)
 # a = range(380, 384)
@@ -70,7 +71,7 @@ def fs(ids):
     def gameParser():
         parser = argparse.ArgumentParser()
         parser.add_argument('--strategy', default=['basic'])
-        parser.add_argument('--sessions', type=int, default=100)
+        parser.add_argument('--sessions', type=int, default=400)
         parser.add_argument('--rounds', type=int, default=250)
         return parser
 
