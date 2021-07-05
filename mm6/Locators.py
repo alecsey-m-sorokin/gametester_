@@ -35,9 +35,9 @@ class APIdata_MancalaQuest:
     CreditDebit_Url = 'games/CreditDebit'
     GetAsyncResponse_Url = 'games/GetAsyncResponse'
     FreeSpin_Url = 'games/FreeSpin'
-    GetMancalaQuestGameState_Url = '/bonus/GetMancalaQuestGameState'
-    SelectCharacter_Url = '/bonus/SelectCharacter'
-    MakeStep_Url = '/bonus/MakeStep'
+    GetMancalaQuestGameState_Url = 'bonus/GetMancalaQuestGameState'
+    SelectCharacter_Url = 'bonus/SelectCharacter'
+    MakeStep_Url = 'bonus/MakeStep'
 
     partnerID = '360'
     partnerID_rtp = '382'
