@@ -43,7 +43,7 @@ def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=25)
+    parser.add_argument('--rounds', type=int, default=5)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
@@ -53,10 +53,11 @@ namespace = gameParams.parse_args(sys.argv[1:])
 sessions = namespace.sessions
 rounds = namespace.rounds
 
+
 global fileName
 dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
-while r < sessions:  # выставляем количество раундов (сессий)
+while r < sessions:  # set the number of rounds (sessions)
     fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
     log = Logger(fileName, toFile=False, toConsole=True)
     print2 = log.printml
@@ -69,7 +70,7 @@ while r < sessions:  # выставляем количество раундов 
     balanceRealBefore = balanceReal
     func(balance, balanceReal, coin, currency)
 
-    while i < rounds:  # выставляем количество спинов (вращений)
+    while i < rounds:  # set the number of spins
         print2('\n')
         print2('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % A.userID)
         creditDebit, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)  # ставка ! CreditDebit # resultId = tokenAsync
