@@ -26,9 +26,9 @@ class APIdata_MancalaQuest:
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
     DOMAIN = 'https://test-games-api.carhenge.space'
 
-    gameURL = 'https://mg-1910-mm6n-api.carhenge.space/'
-    frontURL = 'https://global-mq-00-mancala-quest-webx-slots-mm6.carhenge.space/'
-    partnerURL = 'https://mg-1910-partners-api.carhenge.space/'
+    gameURL = 'https://test-mm6n-api.carhenge.space/'
+    frontURL = 'https://stest.zhdun.space/mm6n/'
+    partnerURL = 'https://test-partners-api.carhenge.space/'
 
     AuthorizationGame_Url = 'auth/AuthorizationGame'
     GetSlotInfo_Url = 'games/GetSlotInfo'
@@ -40,7 +40,7 @@ class APIdata_MancalaQuest:
     MakeStep_Url = 'bonus/MakeStep'
 
     partnerID = '360'
-    partnerID_rtp = '382'
+    partnerID_rtp = '360'
     gameID = '19001'
     userID = '777'
     currency = 'EUR'
