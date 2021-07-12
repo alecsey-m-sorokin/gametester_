@@ -31,6 +31,7 @@ class APIdata_MancalaQuest:
     partnerURL = 'https://test-partners-api.carhenge.space/'
 
     AuthorizationGame_Url = 'auth/AuthorizationGame'
+    ResumeGame_Url = 'games/ResumeGame'
     GetSlotInfo_Url = 'games/GetSlotInfo'
     CreditDebit_Url = 'games/CreditDebit'
     GetAsyncResponse_Url = 'games/GetAsyncResponse'
@@ -40,7 +41,7 @@ class APIdata_MancalaQuest:
     MakeStep_Url = 'bonus/MakeStep'
 
     partnerID = '360'
-    partnerID_rtp = '360'
+    partnerID_rtp = '382'
     gameID = '19001'
     userID = '777'
     currency = 'EUR'

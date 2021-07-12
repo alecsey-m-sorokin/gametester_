@@ -65,10 +65,15 @@ while r < sessions:  # set the number of rounds (sessions)
     print2('round # %s' % str(r + 1))
     regToken = api.testpartnerservice()
     regToken = regToken[0]
-    authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
+    authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
     print2(str(authorizationGame))
     balanceRealBefore = balanceReal
-    func(balance, balanceReal, coin, currency)
+    func(balance, balanceReal, coin, currency, resultId)
+
+    if resultId:
+        resumeGame, tokenAsyncResumeGame = api.ResumeGame(regToken, resultId)
+    else:
+        pass
 
     while i < rounds:  # set the number of spins
         print2('\n')
@@ -137,7 +142,7 @@ while r < sessions:  # set the number of rounds (sessions)
     globalBets.append(sum(totalBets))
     totalWins.clear()
     totalBets.clear()
-    authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
+    authorizationGame, balance, balanceReal, coin, currency, remainingFreeSpinsCount, unc = api.AuthorizationGame(regToken)
     globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) * coin * i), 2))
     print2('globalWins', globalWins)
     print2('sum globalWins ', round(sum(globalWins), 2))

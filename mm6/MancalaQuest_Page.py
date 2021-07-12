@@ -9,6 +9,7 @@ from Locators import APIdata_MancalaQuest, ErrorCodes
 A = APIdata_MancalaQuest
 E = ErrorCodes
 
+
 def write_data_to_json_file(f, target_data):
     """
     : Функция записывает массив target_data в файл 'f' в формате JSON
@@ -33,6 +34,7 @@ def print2file(f, target_data):
     file.write(target_data)  # записываем файл
     file.write('\n')
     file.close()  # закрываем файл
+
 
 def findall(v, k):
     """
@@ -100,7 +102,8 @@ class API_MancalaQuest:
 
     @staticmethod
     def tps(userID):
-        params = {'gameURL': A.gameURL, 'frontURL': A.frontURL, 'partnerURL': A.partnerURL, 'partnerId': A.partnerID_rtp,
+        params = {'gameURL': A.gameURL, 'frontURL': A.frontURL, 'partnerURL': A.partnerURL,
+                  'partnerId': A.partnerID_rtp,
                   'gameID': A.gameID, 'userID': userID, 'currency': A.currency}
         response = requests.get(A.DOMAIN_tps, params=params, headers={'Connection': 'close'})
         # print(response)
@@ -141,7 +144,7 @@ class API_MancalaQuest:
         params_AuthorizationGame = {'Hash': HASH, 'Token': RegToken, 'MobilePlatform': 'false'}
         response_AuthorizationGame = requests.post(A.gameURL + A.AuthorizationGame_Url,
                                                    params={'Hash': HASH, 'Token': RegToken,
-                                                           'MobilePlatform': 'false', },
+                                                           'MobilePlatform': 'false'},
                                                    json=params_AuthorizationGame, headers={'Connection': 'close'})
         print('response_AuthorizationGame = ', response_AuthorizationGame)
         response = response_AuthorizationGame.json()
@@ -152,13 +155,36 @@ class API_MancalaQuest:
         balanceReal = response["BalanceReal"]
         coin = response["Coin"]
         currency = response["Currency"]
+        resultId = response["ResultId"]
 
         def printAG(*b):
             # print('\n')
-            print("Balance = %s, Balance Real = %s, Coin = %s, Currency = %s" % b)
+            print("Balance = %s, Balance Real = %s, Coin = %s, Currency = %s, ResultId = %s" % b)
             print('--------------------------------------------------------------------------------------------------')
 
-        return response, balance, balanceReal, coin, currency, printAG
+        return response, balance, balanceReal, coin, currency, resultId, printAG
+
+    @staticmethod
+    def ResumeGame(RegToken, ResultId):
+        """
+        возвращает параметры: response, tokenAsync
+        'tokenAsync' = jsonData.TokenAsync
+         """
+        HASH = hashlib.md5(('ResumeGame/' + RegToken + ResultId + A.gameKey).encode('utf-8')).hexdigest()
+        print('hash_ResumeGame = ', HASH)
+        params_ResumeGame = {"Hash": HASH, "Token": RegToken, "ResultId": ResultId}
+        response_ResumeGame = requests.post(A.gameURL + A.ResumeGame_Url,
+                                            params={"Hash": HASH, "Token": RegToken, "ResultId": ResultId},
+                                            json=params_ResumeGame,
+                                            headers={'Connection': 'close'})
+        response = response_ResumeGame.json()
+        print('params_MakeStep = ', params_ResumeGame)
+        print('response = ', response)
+        assert response_ResumeGame.status_code == 200
+        tokenAsyncResumeGame = response["TokenAsync"]
+        print('ResumeGame_TokenAsync = ', response['TokenAsync'])
+        # response_ResumeGame.close()
+        return response, tokenAsyncResumeGame
 
     @staticmethod
     def GetSlotInfo(RegToken):
@@ -184,7 +210,8 @@ class API_MancalaQuest:
         print('params = ', params_CreditDebit)
         response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
                                              params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
-                                                     'BetSum': betSum}, json=params_CreditDebit, timeout=1, headers={'Connection': 'close'})
+                                                     'BetSum': betSum}, json=params_CreditDebit,
+                                             headers={'Connection': 'close'})
         print('url = ', response_CreditDebit.url)
         response = response_CreditDebit.json()
         assert response_CreditDebit.status_code == 200
@@ -211,7 +238,7 @@ class API_MancalaQuest:
         params_GetAsyncResponse = {'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync}
         response_GetAsyncResponse = requests.post(A.gameURL + A.GetAsyncResponse_Url,
                                                   params={'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync},
-                                                  json=params_GetAsyncResponse, timeout=1,
+                                                  json=params_GetAsyncResponse,
                                                   headers={'Connection': 'close'})
         print('url = ', response_GetAsyncResponse.url)
         response = response_GetAsyncResponse.json()
@@ -221,12 +248,14 @@ class API_MancalaQuest:
         assert response_GetAsyncResponse.status_code == 200
         while "Error" in response:
             if response["Error"] == 13:
+                print('sleeping ... 1800 ms')
+                time.sleep(1.8)
                 print('GetAsyncResponse = ', response)
                 response_GetAsyncResponse = requests.post(A.gameURL + A.GetAsyncResponse_Url,
                                                           params={'Hash': HASH, 'Token': RegToken,
                                                                   'TokenAsync': TokenAsync},
                                                           json=params_GetAsyncResponse,
-                                                          timeout=1, headers={'Connection': 'close'})
+                                                          headers={'Connection': 'close'})
                 response = response_GetAsyncResponse.json()
             else:
                 for key in E.error_codes_dictionary:
@@ -254,7 +283,8 @@ class API_MancalaQuest:
                 bonusGameResult = findall(response, "WinStateInfo")
                 if bonusGameResult is not None:
                     print('bonus game is finished !')
-                    print(f'{bonusGameResult["WinState"]} {bonusGameResult["FreeSpinCount"]} {bonusGameResult["Multiplier"]}')
+                    print(
+                        f'{bonusGameResult["WinState"]} {bonusGameResult["FreeSpinCount"]} {bonusGameResult["Multiplier"]}')
                     FreeSpinCount = bonusGameResult["WinState"]
                     Multiplier = bonusGameResult["FreeSpinCount"]
                     WinState = bonusGameResult["Multiplier"]
@@ -274,6 +304,7 @@ class API_MancalaQuest:
                 '---------------------------------------------------------------------------------------------------------')
 
             # response_GetAsyncResponse.close()
+
         return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult
 
     @staticmethod
@@ -478,7 +509,7 @@ class API_MancalaQuest:
         print('params freeSpin= ', params_FreeSpin)
         response_FreeSpin = requests.post(A.gameURL + A.FreeSpin_Url,
                                           params={"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                                  "SpinId": SpinId}, json=params_FreeSpin, timeout=1,
+                                                  "SpinId": SpinId}, json=params_FreeSpin,
                                           headers={'Connection': 'close'})
         response = response_FreeSpin.json()
         print("Response =", response_FreeSpin)
@@ -500,18 +531,37 @@ class API_MancalaQuest:
         response_GetAsyncResponse_FreeSpin = requests.post(A.gameURL + A.GetAsyncResponse_Url,
                                                            params={'Hash': HASH, 'Token': RegToken,
                                                                    'TokenAsync': TokenAsyncFreeSpin},
-                                                           json=params_GetAsyncResponse_FreeSpin, timeout=1,
+                                                           json=params_GetAsyncResponse_FreeSpin,
                                                            headers={'Connection': 'close'})
         response = response_GetAsyncResponse_FreeSpin.json()
         print('GetAsyncResponse_FreeSpin = ', response)
         assert response_GetAsyncResponse_FreeSpin.status_code == 200
+
         while "Error" in response:
-            response_GetAsyncResponse_FreeSpin = requests.post(A.gameURL + A.GetAsyncResponse_Url,
-                                                               params={'Hash': HASH, 'Token': RegToken,
-                                                                       'TokenAsync': TokenAsyncFreeSpin},
-                                                               json=params_GetAsyncResponse_FreeSpin, timeout=1,
-                                                               headers={'Connection': 'close'})
-            response = response_GetAsyncResponse_FreeSpin.json()
+            if response["Error"] == 13:
+                print('sleeping ... 1800 ms')
+                time.sleep(1.8)
+                print('GetAsyncResponse = ', response)
+                response_GetAsyncResponse = requests.post(A.gameURL + A.GetAsyncResponse_Url,
+                                                          params={'Hash': HASH, 'Token': RegToken,
+                                                                  'TokenAsync': TokenAsyncFreeSpin},
+                                                          json=params_GetAsyncResponse_FreeSpin,
+                                                          headers={'Connection': 'close'})
+                response = response_GetAsyncResponse_FreeSpin.json()
+            else:
+                for key in E.error_codes_dictionary:
+                    if response["Error"] == key:
+                        print(f'\nScript error: {E.error_codes_dictionary[key]} = {key}', )
+                        exit()
+
+        # while "Error" in response:
+        #     response_GetAsyncResponse_FreeSpin = requests.post(A.gameURL + A.GetAsyncResponse_Url,
+        #                                                        params={'Hash': HASH, 'Token': RegToken,
+        #                                                                'TokenAsync': TokenAsyncFreeSpin},
+        #                                                        json=params_GetAsyncResponse_FreeSpin, timeout=1,
+        #                                                        headers={'Connection': 'close'})
+        #     response = response_GetAsyncResponse_FreeSpin.json()
+
         else:
             spinIdFs = response['SpinResult']['Id']
             print('spinIdFs = ', spinIdFs)

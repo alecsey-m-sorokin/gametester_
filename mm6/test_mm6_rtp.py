@@ -15,7 +15,7 @@ from MancalaQuest_Page import API_MancalaQuest, Logger
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
 
-a = range(400, 410)
+a = range(1100, 1150)
 # a = range(350, 354)
 # a = range(360, 364)
 # a = range(370, 374)
@@ -84,8 +84,8 @@ def fs(ids):
     def gameParser():
         parser = argparse.ArgumentParser()
         parser.add_argument('--strategy', default=['basic'])
-        parser.add_argument('--sessions', type=int, default=1)
-        parser.add_argument('--rounds', type=int, default=5)
+        parser.add_argument('--sessions', type=int, default=10)
+        parser.add_argument('--rounds', type=int, default=250)
         return parser
 
     gameParams = gameParser()
@@ -103,18 +103,22 @@ def fs(ids):
         print2('round # %s' % str(r + 1))
         regToken = api.tps(ids)
         # regToken = regToken[0]
-        authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
+        authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
         print2(str(authorizationGame))
         balanceRealBefore = balanceReal
-        func(balance, balanceReal, coin, currency)
+        func(balance, balanceReal, coin, currency, resultId)
+
+        # if resultId:
+        #     resumeGame, tokenAsyncResumeGame = api.ResumeGame(regToken, resultId)
+        #     getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, tokenAsyncResumeGame)
+        # else:
+        #     pass
 
         while i < rounds:  # выставляем количество спинов (вращений)
             print2('\n')
             print2('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % ids)
-            creditDebit, tokenAsync = api.CreditDebit(regToken, A.betSum,
-                                                      A.cntLineBet)  # ставка ! CreditDebit # resultId = tokenAsync
-            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(
-                regToken, tokenAsync)  # асинхронный ответ ! GetAsyncResponse
+            creditDebit, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)
+            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, tokenAsync)
             print2(str(getAsyncResponse))
             printAR(coin)
             if bonusGameResult:
@@ -206,4 +210,3 @@ if __name__ == "__main__":
     for i in range(len(a)):
         aa[i] = threading.Thread(target=fs2, args=(aa[i],))
         aa[i].start()
-
