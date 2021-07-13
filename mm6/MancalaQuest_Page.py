@@ -156,6 +156,7 @@ class API_MancalaQuest:
         coin = response["Coin"]
         currency = response["Currency"]
         resultId = response["ResultId"]
+        print('ResultId = ', resultId)
 
         def printAG(*b):
             # print('\n')
@@ -167,7 +168,7 @@ class API_MancalaQuest:
     @staticmethod
     def ResumeGame(RegToken, ResultId):
         """
-        возвращает параметры: response, tokenAsync
+        возвращает параметры: response, timeOut, tokenAsync
         'tokenAsync' = jsonData.TokenAsync
          """
         HASH = hashlib.md5(('ResumeGame/' + RegToken + ResultId + A.gameKey).encode('utf-8')).hexdigest()
@@ -178,13 +179,14 @@ class API_MancalaQuest:
                                             json=params_ResumeGame,
                                             headers={'Connection': 'close'})
         response = response_ResumeGame.json()
-        print('params_MakeStep = ', params_ResumeGame)
+        print('params_ResumeGame = ', params_ResumeGame)
         print('response = ', response)
         assert response_ResumeGame.status_code == 200
+        timeOut = response["Timeout"]
         tokenAsyncResumeGame = response["TokenAsync"]
         print('ResumeGame_TokenAsync = ', response['TokenAsync'])
         # response_ResumeGame.close()
-        return response, tokenAsyncResumeGame
+        return response, timeOut, tokenAsyncResumeGame
 
     @staticmethod
     def GetSlotInfo(RegToken):
@@ -200,10 +202,12 @@ class API_MancalaQuest:
     @staticmethod
     def CreditDebit(RegToken, betSum=A.betSum, cntLineBet=A.cntLineBet):
         """
-        возвращает параметры: response, tokenAsync
+        возвращает параметры: response, timeOut, tokenAsync
         'tokenAsync' = jsonData.TokenAsync
          """
         HASH = hashlib.md5(('CreditDebit/' + RegToken + betSum + cntLineBet + A.gameKey).encode('utf-8')).hexdigest()
+        print(
+            '--- CreditDebit : ---------------------------------------------------------------------------------------')
         print('hash_CreditDebit = ', HASH)
         params_CreditDebit = {'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
                               'BetSum': betSum}
@@ -212,17 +216,18 @@ class API_MancalaQuest:
                                              params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
                                                      'BetSum': betSum}, json=params_CreditDebit,
                                              headers={'Connection': 'close'})
-        print('url = ', response_CreditDebit.url)
+        # print('url = ', response_CreditDebit.url)
         response = response_CreditDebit.json()
         assert response_CreditDebit.status_code == 200
+        timeOut = response["Timeout"]
         tokenAsync = response["TokenAsync"]
+        print(f'CreditDebit_TimeOut : {timeOut} / CreditDebit_TokenAsync : {tokenAsync}')
         # print(response)
-        print('CreditDebit_TokenAsync = ', response['TokenAsync'])
         # response_CreditDebit.close()
-        return response, tokenAsync
+        return response, timeOut, tokenAsync
 
     @staticmethod
-    def GetAsyncResponse(RegToken, TokenAsync):
+    def GetAsyncResponse(RegToken, TimeOut, TokenAsync):
         """
         возвращает параметры: response, resultId, spinId, StonesNumber, OAKLines, printAR, oak_l
         'response' =
@@ -234,13 +239,16 @@ class API_MancalaQuest:
         'oak_l' =
          """
         HASH = hashlib.md5(('GetAsyncResponse/' + RegToken + TokenAsync + A.gameKey).encode('utf-8')).hexdigest()
+        print(
+            '--- GetAsyncResponse : ----------------------------------------------------------------------------------')
         print('hash_GetAsyncResponse = ', HASH)
         params_GetAsyncResponse = {'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync}
+        print('params = ', params_GetAsyncResponse)
         response_GetAsyncResponse = requests.post(A.gameURL + A.GetAsyncResponse_Url,
                                                   params={'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync},
                                                   json=params_GetAsyncResponse,
                                                   headers={'Connection': 'close'})
-        print('url = ', response_GetAsyncResponse.url)
+        # print('url = ', response_GetAsyncResponse.url)
         response = response_GetAsyncResponse.json()
         url = response_GetAsyncResponse.url
         # print('url =', url)
@@ -248,9 +256,9 @@ class API_MancalaQuest:
         assert response_GetAsyncResponse.status_code == 200
         while "Error" in response:
             if response["Error"] == 13:
-                print('sleeping ... 1800 ms')
-                time.sleep(1.8)
                 print('GetAsyncResponse = ', response)
+                print(f'sleeping ... {TimeOut} ms')
+                time.sleep(TimeOut / 1000)
                 response_GetAsyncResponse = requests.post(A.gameURL + A.GetAsyncResponse_Url,
                                                           params={'Hash': HASH, 'Token': RegToken,
                                                                   'TokenAsync': TokenAsync},
@@ -299,10 +307,9 @@ class API_MancalaQuest:
             balance_after_spin = balance * coin
             # print('\n')
             print("BetSum = %s, TotalWin = %s, BalanceBeforeSpin = %s, BalanceAfterSpin = %s" % (
-                betSum, totalWin, balance_before_spin, balance_after_spin))
+            betSum, totalWin, balance_before_spin, balance_after_spin))
             print(
                 '---------------------------------------------------------------------------------------------------------')
-
             # response_GetAsyncResponse.close()
 
         return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult
@@ -515,14 +522,15 @@ class API_MancalaQuest:
         print("Response =", response_FreeSpin)
         assert response_FreeSpin.status_code == 200
         url = response_FreeSpin.url
-        # print("Response =", response)
-        tokenAsyncFreeSpin = response['TokenAsync']
-        print('FreeSpin_TokenAsync = ', tokenAsyncFreeSpin)
+        print("Response =", response)
+        timeOut = response["Timeout"]
+        tokenAsyncFreeSpin = response["TokenAsync"]
+        print(f'FreeSpins_TimeOut : {timeOut} / FreeSpins_TokenAsync : {tokenAsyncFreeSpin}')
         response_FreeSpin.close()
-        return response, tokenAsyncFreeSpin
+        return response, timeOut, tokenAsyncFreeSpin
 
     @staticmethod
-    def GetAsyncResponse_FreeSpin(RegToken, TokenAsyncFreeSpin):
+    def GetAsyncResponse_FreeSpin(RegToken, TimeOut, TokenAsyncFreeSpin):
         HASH = hashlib.md5(
             ('GetAsyncResponse/' + RegToken + TokenAsyncFreeSpin + A.gameKey).encode('utf-8')).hexdigest()
         print('hash_GetAsyncResponseFreeSpin = ', HASH)
@@ -539,28 +547,21 @@ class API_MancalaQuest:
 
         while "Error" in response:
             if response["Error"] == 13:
-                print('sleeping ... 1800 ms')
-                time.sleep(1.8)
                 print('GetAsyncResponse = ', response)
-                response_GetAsyncResponse = requests.post(A.gameURL + A.GetAsyncResponse_Url,
-                                                          params={'Hash': HASH, 'Token': RegToken,
-                                                                  'TokenAsync': TokenAsyncFreeSpin},
-                                                          json=params_GetAsyncResponse_FreeSpin,
-                                                          headers={'Connection': 'close'})
+                print(f'sleeping ... {TimeOut} ms')
+                time.sleep(TimeOut / 1000)
+                print('GetAsyncResponse = ', response)
+                response_GetAsyncResponse_FreeSpin = requests.post(A.gameURL + A.GetAsyncResponse_Url,
+                                                                   params={'Hash': HASH, 'Token': RegToken,
+                                                                           'TokenAsync': TokenAsyncFreeSpin},
+                                                                   json=params_GetAsyncResponse_FreeSpin,
+                                                                   headers={'Connection': 'close'})
                 response = response_GetAsyncResponse_FreeSpin.json()
             else:
                 for key in E.error_codes_dictionary:
                     if response["Error"] == key:
                         print(f'\nScript error: {E.error_codes_dictionary[key]} = {key}', )
                         exit()
-
-        # while "Error" in response:
-        #     response_GetAsyncResponse_FreeSpin = requests.post(A.gameURL + A.GetAsyncResponse_Url,
-        #                                                        params={'Hash': HASH, 'Token': RegToken,
-        #                                                                'TokenAsync': TokenAsyncFreeSpin},
-        #                                                        json=params_GetAsyncResponse_FreeSpin, timeout=1,
-        #                                                        headers={'Connection': 'close'})
-        #     response = response_GetAsyncResponse_FreeSpin.json()
 
         else:
             spinIdFs = response['SpinResult']['Id']
