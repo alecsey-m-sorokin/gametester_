@@ -41,9 +41,9 @@ class APIdata_MancalaQuest:
     MakeStep_Url = 'bonus/MakeStep'
 
     partnerID = '360'
-    partnerID_rtp = '360'
+    partnerID_rtp = '382'
     gameID = '19001'
-    userID = '333'
+    userID = '335'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'

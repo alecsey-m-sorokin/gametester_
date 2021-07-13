@@ -43,7 +43,7 @@ def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=15)
+    parser.add_argument('--rounds', type=int, default=1)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
@@ -62,7 +62,7 @@ while r < sessions:  # set the number of rounds (sessions)
     log = Logger(fileName, toFile=False, toConsole=True)
     print2 = log.printml
     print2('\n')
-    print2('round # %s' % str(r + 1))
+    print2(f'\nround # %s' % str(r + 1))
     regToken = api.testpartnerservice()
     regToken = regToken[0]
     authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
@@ -105,7 +105,7 @@ while r < sessions:  # set the number of rounds (sessions)
         pass
 
     while i < rounds:  # set the number of spins
-        print2('\nspin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % A.userID)
+        print2(f'\nspin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {A.userID}')
         creditDebit, timeOut, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)
         getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsync)
         # print2(str(getAsyncResponse))

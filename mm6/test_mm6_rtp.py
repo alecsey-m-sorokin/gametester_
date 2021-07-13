@@ -28,8 +28,7 @@ for num in range(len(a)):
 
 
 def thread_function(ids):
-    print('\n')
-    print('userId # %s' % ids)
+    print(f'\nuserId # {ids}')
     regToken = api.tps(ids)
     logging.info("Thread %s: starting", ids)
     time.sleep(2)
@@ -143,8 +142,7 @@ def fs(ids):
             pass
 
         while i < rounds:  # выставляем количество спинов (вращений)
-            print2('\n')
-            print2('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % ids)
+            print2(f'\nspin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids}')
             creditDebit, timeOut, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)
             getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsync)
             print2(str(getAsyncResponse))
