@@ -43,7 +43,7 @@ class APIdata_MancalaQuest:
     partnerID = '360'
     partnerID_rtp = '382'
     gameID = '19001'
-    userID = '335'
+    userID = '55555'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'

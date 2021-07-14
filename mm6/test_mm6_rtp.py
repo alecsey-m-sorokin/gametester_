@@ -15,7 +15,7 @@ from MancalaQuest_Page import API_MancalaQuest, Logger
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
 
-a = range(1300, 1301)
+a = range(20100, 20170)
 # a = range(350, 354)
 # a = range(360, 364)
 # a = range(370, 374)
@@ -83,8 +83,8 @@ def fs(ids):
     def gameParser():
         parser = argparse.ArgumentParser()
         parser.add_argument('--strategy', default=['basic'])
-        parser.add_argument('--sessions', type=int, default=3)
-        parser.add_argument('--rounds', type=int, default=15)
+        parser.add_argument('--sessions', type=int, default=1)
+        parser.add_argument('--rounds', type=int, default=500)
         return parser
 
     gameParams = gameParser()
@@ -205,7 +205,7 @@ def fs(ids):
         globalBets.append(sum(totalBets))
         totalWins.clear()
         totalBets.clear()
-        authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
+        authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
         globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) * coin * i), 2))
         print2('globalWins', globalWins)
         print2('sum globalWins ', round(sum(globalWins), 2))
