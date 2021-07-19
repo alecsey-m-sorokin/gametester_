@@ -42,6 +42,11 @@ class APIdata_MancalaQuest:
 
     partnerID = '360'
     partnerID_rtp = '382'
+    partnerID_rtp_90 = '476'
+    partnerID_rtp_95 = '477'
+    partnerID_rtp_96 = '478'
+    partnerID_rtp_97 = '479'
+    partnerID_rtp_120 = '480'
     gameID = '19001'
     userID = '55555'
     currency = 'EUR'

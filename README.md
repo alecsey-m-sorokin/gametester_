@@ -17,3 +17,5 @@ python.exe starter.py mm5 --strategy replace -- sessions 2 --rounds 15
 python.exe starter.py mm5
 
 так же можно необязательные параметры использовать частично
+
+starter.py mm6 --strategy rtp --sessions 1 --rounds 1 --rtp 120

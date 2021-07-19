@@ -15,7 +15,7 @@ from MancalaQuest_Page import API_MancalaQuest, Logger
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
 
-a = range(20100, 20170)
+a = range(20300, 20330)
 # a = range(350, 354)
 # a = range(360, 364)
 # a = range(370, 374)
@@ -84,13 +84,28 @@ def fs(ids):
         parser = argparse.ArgumentParser()
         parser.add_argument('--strategy', default=['basic'])
         parser.add_argument('--sessions', type=int, default=1)
-        parser.add_argument('--rounds', type=int, default=500)
+        parser.add_argument('--rounds', type=int, default=1)
+        parser.add_argument('--rtp', type=int, default=A.partnerID_rtp)
         return parser
 
     gameParams = gameParser()
     namespace = gameParams.parse_args(sys.argv[1:])
     sessions = namespace.sessions
     rounds = namespace.rounds
+    rtp = namespace.rtp
+
+    if namespace.rtp == 90:
+        rtp = A.partnerID_rtp_90
+    elif namespace.rtp == 95:
+        rtp = A.partnerID_rtp_95
+    elif namespace.rtp == 96:
+        rtp = A.partnerID_rtp_96
+    elif namespace.rtp == 97:
+        rtp = A.partnerID_rtp_97
+    elif namespace.rtp == 120:
+        rtp = A.partnerID_rtp_120
+    else:
+        rtp = A.partnerID_rtp_95
 
     dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
@@ -100,7 +115,7 @@ def fs(ids):
         print2 = log.printml
         print2('\n')
         print2('round # %s' % str(r + 1))
-        regToken = api.tps(ids)
+        regToken = api.tps(ids, rtp)
         # regToken = regToken[0]
         authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
         print2(str(authorizationGame))

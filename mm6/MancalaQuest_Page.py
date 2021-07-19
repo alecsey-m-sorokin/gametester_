@@ -101,9 +101,9 @@ class Logger(object):
 class API_MancalaQuest:
 
     @staticmethod
-    def tps(userID):
+    def tps(userID, rtp):
         params = {'gameURL': A.gameURL, 'frontURL': A.frontURL, 'partnerURL': A.partnerURL,
-                  'partnerId': A.partnerID_rtp,
+                  'partnerId': rtp,
                   'gameID': A.gameID, 'userID': userID, 'currency': A.currency}
         response = requests.get(A.DOMAIN_tps, params=params, headers={'Connection': 'close'})
         # print(response)
@@ -122,6 +122,7 @@ class API_MancalaQuest:
         print('params = ', params)
         assert response.status_code == 200
         print('response status code =', response.status_code)
+        print('url = ', response.url)
         regToken = response.text.split("token=")[1].split("&")[0]
         iFrameUrl = response.text
         print('game_%s_IframeUrl = ' % A.gameID, response.text)
@@ -273,8 +274,12 @@ class API_MancalaQuest:
         else:
             resultId = response['ResultId']
             spinId = response["SpinResult"]["Id"]
-            totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
-            remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
+            if response["GameFreeSpins"]:
+                totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
+                remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
+            else:
+                totalFreeSpinsCount = ''
+                remainingFreeSpinsCount = ''
             print("Response =", response)
             print("ResultId =", resultId)
             print("SpinId =", spinId)
