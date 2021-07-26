@@ -15,7 +15,10 @@ from MancalaQuest_Page import API_MancalaQuest, Logger
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
 
-a = range(20300, 20330)
+# a = range(20300, 20330)  # 95%
+# a = range(20500, 20530)  # 90%
+# a = range(20900, 20930)  # 120%
+a = range(55555, 55556)  # 120%
 # a = range(350, 354)
 # a = range(360, 364)
 # a = range(370, 374)
@@ -72,27 +75,19 @@ def fs(ids):
     FS_BONUS_collected_winnings.clear()
     FS_BONUS_collected.clear()
 
-    # FS_collected_count = []
-    # FS_collected_real_count = []
-    # FS_collected_winnings = []
-    #
-    # FS_collected_count.clear()
-    # FS_collected_real_count.clear()
-    # FS_collected_winnings.clear()
-
     def gameParser():
         parser = argparse.ArgumentParser()
         parser.add_argument('--strategy', default=['basic'])
         parser.add_argument('--sessions', type=int, default=1)
         parser.add_argument('--rounds', type=int, default=1)
-        parser.add_argument('--rtp', type=int, default=A.partnerID_rtp)
+        parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
         return parser
 
     gameParams = gameParser()
     namespace = gameParams.parse_args(sys.argv[1:])
     sessions = namespace.sessions
     rounds = namespace.rounds
-    rtp = namespace.rtp
+    # rtp = namespace.rtp
 
     if namespace.rtp == 90:
         rtp = A.partnerID_rtp_90
