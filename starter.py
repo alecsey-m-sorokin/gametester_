@@ -25,8 +25,9 @@ def gameParser():
     mm6 = subparsers.add_parser('mm6')
     mm6.add_argument('--strategy', default='basic')
     mm6.add_argument('--sessions', type=int, default=1)
-    mm6.add_argument('--rounds', type=int, default=10)
+    mm6.add_argument('--rounds', type=int, default=3)
     mm6.add_argument('--rtp', type=int, default=A.partnerID)
+    mm6.add_argument('--users', type=int, default=3)
     # mm6.add_argument('--userid', type=int, default=A.userID)
 
     return parser
@@ -63,6 +64,7 @@ elif namespace.command == "mm6":
     print(f'sessions = {namespace.sessions}')
     print(f'rounds = {namespace.rounds}')
     print(f'rtp (partnerId) = {namespace.rtp}')
+    print(f'users = {namespace.users}')
 
     if namespace.strategy == 'fs':
         os.system(f'python {A.fileName_fs} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
@@ -71,7 +73,7 @@ elif namespace.command == "mm6":
         os.system(f'python {A.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
 
     elif namespace.strategy == 'rtp':
-        os.system(f'python {A.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds} --rtp {namespace.rtp}')
+        os.system(f'python {A.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds} --rtp {namespace.rtp} --users {namespace.users}')
 
     else:
         print("Что-то пошло не так...")

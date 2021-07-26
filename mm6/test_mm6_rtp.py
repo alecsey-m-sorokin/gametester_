@@ -15,19 +15,63 @@ from MancalaQuest_Page import API_MancalaQuest, Logger
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
 
-# a = range(20300, 20330)  # 95%
-# a = range(20500, 20530)  # 90%
-# a = range(20900, 20930)  # 120%
-a = range(55555, 55556)  # 120%
+
+def gameParser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--strategy', default=['basic'])
+    parser.add_argument('--sessions', type=int, default=200)
+    parser.add_argument('--rounds', type=int, default=200)
+    parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_90)
+    parser.add_argument('--users', type=int, default=30)
+    return parser
+
+gameParams = gameParser()
+namespace = gameParams.parse_args(sys.argv[1:])
+sessions = namespace.sessions
+rounds = namespace.rounds
+rtp = namespace.rtp
+users = namespace.users
+
+# if namespace.rtp == 90:
+#     rtp = A.partnerID_rtp_90
+# elif namespace.rtp == 95:
+#     rtp = A.partnerID_rtp_95
+# elif namespace.rtp == 96:
+#     rtp = A.partnerID_rtp_96
+# elif namespace.rtp == 97:
+#     rtp = A.partnerID_rtp_97
+# elif namespace.rtp == 120:
+#     rtp = A.partnerID_rtp_120
+# else:
+#     rtp = A.partnerID_rtp_90
+
+
+rtp_90 = 20500  # 90%
+rtp_95 = 20300  # 95%
+rtp_120 = 20900  # 120%
+
+rtp_user_count = users
+rtp_user_range = range(rtp_95, rtp_95 + rtp_user_count)
+rtp_user_list = []
+
+for xxx in range(len(rtp_user_range)):
+    rtp_user_list.append(rtp_user_range[xxx])
+
+
+# rtp_95 = range(20300, 20330)  # 95%
+# rtp_90 = range(20500, 20530)  # 90%
+# rtp_120 = range(20900, 20930)  # 120%
+
+# a = range(55555, 55556)  # 120%
 # a = range(350, 354)
 # a = range(360, 364)
 # a = range(370, 374)
 # a = range(380, 384)
 # a = range(390, 394)
-aa = []
-
-for num in range(len(a)):
-    aa.append(a[num])
+# aa = []
+#
+# for num in range(len(a)):
+#     aa.append(a[num])
 
 
 def thread_function(ids):
@@ -49,6 +93,7 @@ def fs2(ids):
             time.sleep(2)
 
 # global fileName
+
 
 def fs(ids):
     r = 0
@@ -75,32 +120,33 @@ def fs(ids):
     FS_BONUS_collected_winnings.clear()
     FS_BONUS_collected.clear()
 
-    def gameParser():
-        parser = argparse.ArgumentParser()
-        parser.add_argument('--strategy', default=['basic'])
-        parser.add_argument('--sessions', type=int, default=1)
-        parser.add_argument('--rounds', type=int, default=1)
-        parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
-        return parser
-
-    gameParams = gameParser()
-    namespace = gameParams.parse_args(sys.argv[1:])
-    sessions = namespace.sessions
-    rounds = namespace.rounds
-    # rtp = namespace.rtp
-
-    if namespace.rtp == 90:
-        rtp = A.partnerID_rtp_90
-    elif namespace.rtp == 95:
-        rtp = A.partnerID_rtp_95
-    elif namespace.rtp == 96:
-        rtp = A.partnerID_rtp_96
-    elif namespace.rtp == 97:
-        rtp = A.partnerID_rtp_97
-    elif namespace.rtp == 120:
-        rtp = A.partnerID_rtp_120
-    else:
-        rtp = A.partnerID_rtp_95
+    # def gameParser():
+    #     parser = argparse.ArgumentParser()
+    #     parser.add_argument('--strategy', default=['basic'])
+    #     parser.add_argument('--sessions', type=int, default=1)
+    #     parser.add_argument('--rounds', type=int, default=1)
+    #     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_120)
+    #     parser.add_argument('--users', type=int, default=2)
+    #     return parser
+    #
+    # gameParams = gameParser()
+    # namespace = gameParams.parse_args(sys.argv[1:])
+    # sessions = namespace.sessions
+    # rounds = namespace.rounds
+    # # rtp = namespace.rtp
+    #
+    # if namespace.rtp == 90:
+    #     rtp = A.partnerID_rtp_90
+    # elif namespace.rtp == 95:
+    #     rtp = A.partnerID_rtp_95
+    # elif namespace.rtp == 96:
+    #     rtp = A.partnerID_rtp_96
+    # elif namespace.rtp == 97:
+    #     rtp = A.partnerID_rtp_97
+    # elif namespace.rtp == 120:
+    #     rtp = A.partnerID_rtp_120
+    # else:
+    #     rtp = A.partnerID_rtp_120
 
     dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
@@ -243,6 +289,10 @@ if __name__ == "__main__":
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
 
-    for i in range(len(a)):
-        aa[i] = threading.Thread(target=fs2, args=(aa[i],))
-        aa[i].start()
+    for i in range(len(rtp_user_range)):
+        rtp_user_list[i] = threading.Thread(target=fs2, args=(rtp_user_list[i],))
+        rtp_user_list[i].start()
+
+    # for i in range(len(a)):
+    #     aa[i] = threading.Thread(target=fs2, args=(aa[i],))
+    #     aa[i].start()
