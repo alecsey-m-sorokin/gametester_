@@ -50,9 +50,9 @@ else:
 def thread_function(ids):
     print(f'\nuserId # {ids}')
     regToken = api.tps(ids, rtp)
-    logging.info("Thread %s: starting", ids)
+    logging.info(f'Thread {ids}: starting')
     time.sleep(2)
-    logging.info("Thread %s: finishing", ids)
+    logging.info(f'Thread {ids}: finishing')
 
 
 def fs2(ids):
@@ -100,6 +100,7 @@ def fs(ids):
         print2('\n')
         print2('round # %s' % str(r + 1))
         regToken = api.tps(ids, rtp)
+        logging.info(f'Thread {ids}: starting')
         # regToken = regToken[0]
         authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
         print2(str(authorizationGame))
@@ -242,6 +243,7 @@ def fs(ids):
 
     print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
     print2('the end')
+    logging.info(f'Thread {ids}: finishing')
 
 
 if __name__ == "__main__":
@@ -255,7 +257,3 @@ if __name__ == "__main__":
     for i in range(len(currentRTP[1])):
         currentRTP[2][i] = threading.Thread(target=fs2, args=(currentRTP[2][i],))
         currentRTP[2][i].start()
-
-    # for i in range(len(rtp_user_range)):
-    #     rtp_user_list[i] = threading.Thread(target=fs2, args=(rtp_user_list[i],))
-    #     rtp_user_list[i].start()
