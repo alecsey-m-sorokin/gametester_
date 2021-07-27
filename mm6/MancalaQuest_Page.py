@@ -98,6 +98,34 @@ class Logger(object):
         return
 
 
+class RTP:
+
+    def __init__(self, userCount=0, currentRTP=0):
+        self.userCount = userCount
+        self.currentRTP = currentRTP
+
+        if self.currentRTP == 90:
+            self.start_users_rtp = A.start_users_rtp_90
+        if self.currentRTP == 95:
+            self.start_users_rtp = A.start_users_rtp_95
+        if self.currentRTP == 120:
+            self.start_users_rtp = A.start_users_rtp_120
+        else:
+            self.start_users_rtp = A.start_users_rtp_95
+
+        return
+
+    def setRTP(self):
+        rtp_user_count = self.userCount
+        rtp_user_range = range(self.start_users_rtp, self.start_users_rtp + rtp_user_count)
+        rtp_user_list = []
+
+        for xxx in range(len(rtp_user_range)):
+            rtp_user_list.append(rtp_user_range[xxx])
+
+        return rtp_user_count, rtp_user_range, rtp_user_list
+
+
 class API_MancalaQuest:
 
     @staticmethod

@@ -1,4 +1,9 @@
+import argparse
 import json
+import sys
+
+from mm6.Locators import RTP, APIdata_MancalaQuest
+from mm6.MancalaQuest_Page import API_MancalaQuest
 
 
 def findall(v, k):
@@ -39,3 +44,29 @@ else:
     print('not OK')
 
 # print(json.dumps(data, indent=2))
+
+
+def gameParser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--strategy', default=['basic'])
+    parser.add_argument('--sessions', type=int, default=1)
+    parser.add_argument('--rounds', type=int, default=1)
+    parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_120)
+    parser.add_argument('--users', type=int, default=3)
+    return parser
+
+
+A = APIdata_MancalaQuest
+api = API_MancalaQuest
+
+gameParams = gameParser()
+namespace = gameParams.parse_args(sys.argv[1:])
+sessions = namespace.sessions
+rounds = namespace.rounds
+rtp = namespace.rtp
+users = namespace.users
+
+setRTP = RTP(users, rtp)
+currentRTP = setRTP.setRTP()
+
+print(currentRTP)

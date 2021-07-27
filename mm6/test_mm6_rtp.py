@@ -10,7 +10,7 @@ from random import randint
 import pytest
 from parameterized import parameterized
 from Locators import bets, APIdata_MancalaQuest
-from MancalaQuest_Page import API_MancalaQuest, Logger
+from MancalaQuest_Page import API_MancalaQuest, Logger, RTP
 
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
@@ -19,11 +19,12 @@ api = API_MancalaQuest
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=200)
-    parser.add_argument('--rounds', type=int, default=200)
-    parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_90)
-    parser.add_argument('--users', type=int, default=30)
+    parser.add_argument('--sessions', type=int, default=1)
+    parser.add_argument('--rounds', type=int, default=1)
+    parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
+    parser.add_argument('--users', type=int, default=3)
     return parser
+
 
 gameParams = gameParser()
 namespace = gameParams.parse_args(sys.argv[1:])
@@ -32,51 +33,23 @@ rounds = namespace.rounds
 rtp = namespace.rtp
 users = namespace.users
 
-# if namespace.rtp == 90:
-#     rtp = A.partnerID_rtp_90
-# elif namespace.rtp == 95:
-#     rtp = A.partnerID_rtp_95
-# elif namespace.rtp == 96:
-#     rtp = A.partnerID_rtp_96
-# elif namespace.rtp == 97:
-#     rtp = A.partnerID_rtp_97
-# elif namespace.rtp == 120:
-#     rtp = A.partnerID_rtp_120
-# else:
-#     rtp = A.partnerID_rtp_90
-
-
-rtp_90 = 20500  # 90%
-rtp_95 = 20300  # 95%
-rtp_120 = 20900  # 120%
-
-rtp_user_count = users
-rtp_user_range = range(rtp_95, rtp_95 + rtp_user_count)
-rtp_user_list = []
-
-for xxx in range(len(rtp_user_range)):
-    rtp_user_list.append(rtp_user_range[xxx])
-
-
-# rtp_95 = range(20300, 20330)  # 95%
-# rtp_90 = range(20500, 20530)  # 90%
-# rtp_120 = range(20900, 20930)  # 120%
-
-# a = range(55555, 55556)  # 120%
-# a = range(350, 354)
-# a = range(360, 364)
-# a = range(370, 374)
-# a = range(380, 384)
-# a = range(390, 394)
-# aa = []
-#
-# for num in range(len(a)):
-#     aa.append(a[num])
+if namespace.rtp == 90:
+    rtp = A.partnerID_rtp_90
+elif namespace.rtp == 95:
+    rtp = A.partnerID_rtp_95
+elif namespace.rtp == 96:
+    rtp = A.partnerID_rtp_96
+elif namespace.rtp == 97:
+    rtp = A.partnerID_rtp_97
+elif namespace.rtp == 120:
+    rtp = A.partnerID_rtp_120
+else:
+    rtp = A.partnerID_rtp_95
 
 
 def thread_function(ids):
     print(f'\nuserId # {ids}')
-    regToken = api.tps(ids)
+    regToken = api.tps(ids, rtp)
     logging.info("Thread %s: starting", ids)
     time.sleep(2)
     logging.info("Thread %s: finishing", ids)
@@ -87,9 +60,7 @@ def fs2(ids):
         try:
             return fs(ids)
         except Exception as e:
-            print(
-                '============================================ Errrrrooooooooooooooooooorrrrrrr ============================================',
-                e)
+            print('============================================ Errrrrooooooooooooooooooorrrrrrr ============================================', e)
             time.sleep(2)
 
 # global fileName
@@ -120,34 +91,6 @@ def fs(ids):
     FS_BONUS_collected_winnings.clear()
     FS_BONUS_collected.clear()
 
-    # def gameParser():
-    #     parser = argparse.ArgumentParser()
-    #     parser.add_argument('--strategy', default=['basic'])
-    #     parser.add_argument('--sessions', type=int, default=1)
-    #     parser.add_argument('--rounds', type=int, default=1)
-    #     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_120)
-    #     parser.add_argument('--users', type=int, default=2)
-    #     return parser
-    #
-    # gameParams = gameParser()
-    # namespace = gameParams.parse_args(sys.argv[1:])
-    # sessions = namespace.sessions
-    # rounds = namespace.rounds
-    # # rtp = namespace.rtp
-    #
-    # if namespace.rtp == 90:
-    #     rtp = A.partnerID_rtp_90
-    # elif namespace.rtp == 95:
-    #     rtp = A.partnerID_rtp_95
-    # elif namespace.rtp == 96:
-    #     rtp = A.partnerID_rtp_96
-    # elif namespace.rtp == 97:
-    #     rtp = A.partnerID_rtp_97
-    # elif namespace.rtp == 120:
-    #     rtp = A.partnerID_rtp_120
-    # else:
-    #     rtp = A.partnerID_rtp_120
-
     dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 
     while r < sessions:  # выставляем количество раундов (сессий)
@@ -165,21 +108,27 @@ def fs(ids):
 
         if resultId is not None:
             resumeGame, timeOut, tokenAsyncResumeGame = api.ResumeGame(regToken, resultId)
-            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsyncResumeGame)
+            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(
+                regToken, timeOut, tokenAsyncResumeGame)
 
             if totalFreeSpinsCount:
                 freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinId)
-                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
-                print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
+                    regToken, timeOut, tokenAsyncFreeSpin)
+                print2(
+                    f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                 globalWinsFS.clear()
-                globalWinsFS.append(getAsyncResponse["WinInfo"]["CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
+                globalWinsFS.append(getAsyncResponse["WinInfo"][
+                                        "CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
                 globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('globalWinsFS = ', globalWinsFS)
                 while remainingFreeSpinsCount > 0:
                     freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinIdFs)
-                    getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
-                    print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                    getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
+                        regToken, timeOut, tokenAsyncFreeSpin)
+                    print2(
+                        f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                     print2(str(getAsyncResponseFreeSpin))
                     globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                     print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
@@ -188,9 +137,11 @@ def fs(ids):
                 print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
                 print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
                 if not bonusGameResult:
-                    FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
+                    FS_WILD_collected_winnings.append(
+                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
                 else:
-                    FS_BONUS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
+                    FS_BONUS_collected_winnings.append(
+                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
             else:
                 pass
 
@@ -200,7 +151,8 @@ def fs(ids):
         while i < rounds:  # выставляем количество спинов (вращений)
             print2(f'\nspin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids}')
             creditDebit, timeOut, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)
-            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsync)
+            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(
+                regToken, timeOut, tokenAsync)
             print2(str(getAsyncResponse))
             printAR(coin)
             if bonusGameResult:
@@ -208,7 +160,8 @@ def fs(ids):
                 print2('! you WIN !')
                 print2(bonusGameResult)
             elif not bonusGameResult and totalFreeSpinsCount:
-                FS_WILD_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок от WILD символов
+                FS_WILD_collected_count.append(
+                    totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок от WILD символов
                 fsLabel = 'WILD`s'
 
             if totalFreeSpinsCount:
@@ -216,19 +169,24 @@ def fs(ids):
                 тут начинаются Фри спины, полученные в результате выпадения Wild- символов слева и справа
                 """
                 freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinId)
-                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
-                print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
+                    regToken, timeOut, tokenAsyncFreeSpin)
+                print2(
+                    f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                 print2(str(getAsyncResponseFreeSpin))
                 globalWinsFS.clear()
                 # FS_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок
-                globalWinsFS.append(getAsyncResponse["WinInfo"]["CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
+                globalWinsFS.append(getAsyncResponse["WinInfo"][
+                                        "CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
                 globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('globalWinsFS = ', globalWinsFS)
                 while remainingFreeSpinsCount > 0:
                     freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinIdFs)
-                    getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
-                    print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                    getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
+                        regToken, timeOut, tokenAsyncFreeSpin)
+                    print2(
+                        f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                     print2(str(getAsyncResponseFreeSpin))
                     globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                     print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
@@ -238,9 +196,11 @@ def fs(ids):
                 print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
                 # FS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов
                 if not bonusGameResult:
-                    FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
+                    FS_WILD_collected_winnings.append(
+                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
                 else:
-                    FS_BONUS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
+                    FS_BONUS_collected_winnings.append(
+                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
 
             else:
                 pass
@@ -289,10 +249,13 @@ if __name__ == "__main__":
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
 
-    for i in range(len(rtp_user_range)):
-        rtp_user_list[i] = threading.Thread(target=fs2, args=(rtp_user_list[i],))
-        rtp_user_list[i].start()
+    setRTP = RTP(users, rtp)
+    currentRTP = setRTP.setRTP()
 
-    # for i in range(len(a)):
-    #     aa[i] = threading.Thread(target=fs2, args=(aa[i],))
-    #     aa[i].start()
+    for i in range(len(currentRTP[1])):
+        currentRTP[2][i] = threading.Thread(target=fs2, args=(currentRTP[2][i],))
+        currentRTP[2][i].start()
+
+    # for i in range(len(rtp_user_range)):
+    #     rtp_user_list[i] = threading.Thread(target=fs2, args=(rtp_user_list[i],))
+    #     rtp_user_list[i].start()
