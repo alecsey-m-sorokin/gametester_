@@ -252,7 +252,7 @@ class API_MancalaQuest:
         tokenAsync = response["TokenAsync"]
         print(f'CreditDebit_TimeOut : {timeOut} / CreditDebit_TokenAsync : {tokenAsync}')
         # print(response)
-        # response_CreditDebit.close()
+        response_CreditDebit.close()
         return response, timeOut, tokenAsync
 
     @staticmethod
@@ -306,8 +306,8 @@ class API_MancalaQuest:
                 totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
                 remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
             else:
-                totalFreeSpinsCount = ''
-                remainingFreeSpinsCount = ''
+                totalFreeSpinsCount = 0
+                remainingFreeSpinsCount = 0
             print("Response =", response)
             print("ResultId =", resultId)
             print("SpinId =", spinId)
@@ -340,10 +340,10 @@ class API_MancalaQuest:
             balance_after_spin = balance * coin
             # print('\n')
             print("BetSum = %s, TotalWin = %s, BalanceBeforeSpin = %s, BalanceAfterSpin = %s" % (
-            betSum, totalWin, balance_before_spin, balance_after_spin))
+                betSum, totalWin, balance_before_spin, balance_after_spin))
             print(
                 '---------------------------------------------------------------------------------------------------------')
-            # response_GetAsyncResponse.close()
+            response_GetAsyncResponse.close()
 
         return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult
 
@@ -600,10 +600,13 @@ class API_MancalaQuest:
             spinIdFs = response['SpinResult']['Id']
             print('spinIdFs = ', spinIdFs)
             print("Response =", response)
-            remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
-            totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
-            print("remainingFreeSpinsCount = ", remainingFreeSpinsCount)
-            print("totalFreeSpinsCount = ", totalFreeSpinsCount)
-            pass
+            if response["GameFreeSpins"]:
+                remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
+                totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
+                print("remainingFreeSpinsCount = ", remainingFreeSpinsCount)
+                print("totalFreeSpinsCount = ", totalFreeSpinsCount)
+            else:
+                totalFreeSpinsCount = 0
+                remainingFreeSpinsCount = 0
         response_GetAsyncResponse_FreeSpin.close()
         return response, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs

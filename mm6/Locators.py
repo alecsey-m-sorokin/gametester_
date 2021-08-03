@@ -27,6 +27,7 @@ class APIdata_MancalaQuest:
     DOMAIN = 'https://test-games-api.carhenge.space'
 
     gameURL = 'https://test-mm6n-api.carhenge.space/'
+    # gameURL = 'https://mq-2-mm6n-api.carhenge.space/'
     frontURL = 'https://stest.zhdun.space/mm6n/'
     partnerURL = 'https://test-partners-api.carhenge.space/'
 

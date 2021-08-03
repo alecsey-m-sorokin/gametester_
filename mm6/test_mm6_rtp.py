@@ -19,10 +19,10 @@ api = API_MancalaQuest
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=1)
+    parser.add_argument('--sessions', type=int, default=200)
+    parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
-    parser.add_argument('--users', type=int, default=3)
+    parser.add_argument('--users', type=int, default=50)
     return parser
 
 
@@ -54,14 +54,17 @@ def thread_function(ids):
     time.sleep(2)
     logging.info(f'Thread {ids}: finishing')
 
+r = 0
+i = 0
 
 def fs2(ids):
     while True:
         try:
             return fs(ids)
         except Exception as e:
-            print('============================================ Errrrrooooooooooooooooooorrrrrrr ============================================', e)
-            time.sleep(2)
+            # print(f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
+            print('=================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
+            time.sleep(1)
 
 # global fileName
 
@@ -100,7 +103,7 @@ def fs(ids):
         print2('\n')
         print2('round # %s' % str(r + 1))
         regToken = api.tps(ids, rtp)
-        logging.info(f'Thread {ids}: starting')
+        # logging.info(f'Thread {ids}: starting')
         # regToken = regToken[0]
         authorizationGame, balance, balanceReal, coin, currency, resultId, func = api.AuthorizationGame(regToken)
         print2(str(authorizationGame))
@@ -243,7 +246,7 @@ def fs(ids):
 
     print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
     print2('the end')
-    logging.info(f'Thread {ids}: finishing')
+    # logging.info(f'Thread {ids}: finishing')
 
 
 if __name__ == "__main__":
