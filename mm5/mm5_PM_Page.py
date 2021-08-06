@@ -299,6 +299,5 @@ class API_PortalMaster:
             print("Response =", response)
             freeSpinsCount = response["FreeSpinsCount"]
             print("FreeSpinsCount = ", freeSpinsCount)
-            pass
         response_GetAsyncResponse_FreeSpin.close()
         return response, freeSpinsCount, spinIdFs

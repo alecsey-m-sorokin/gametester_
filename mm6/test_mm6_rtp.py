@@ -22,7 +22,7 @@ def gameParser():
     parser.add_argument('--sessions', type=int, default=200)
     parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
-    parser.add_argument('--users', type=int, default=50)
+    parser.add_argument('--users', type=int, default=10)
     return parser
 
 
@@ -47,12 +47,12 @@ else:
     rtp = A.partnerID_rtp_95
 
 
-def thread_function(ids):
-    print(f'\nuserId # {ids}')
-    regToken = api.tps(ids, rtp)
-    logging.info(f'Thread {ids}: starting')
-    time.sleep(2)
-    logging.info(f'Thread {ids}: finishing')
+# def thread_function(ids):
+#     print(f'\nuserId # {ids}')
+#     regToken = api.tps(ids, rtp)
+#     logging.info(f'Thread {ids}: starting')
+#     time.sleep(2)
+#     logging.info(f'Thread {ids}: finishing')
 
 r = 0
 i = 0
@@ -62,9 +62,9 @@ def fs2(ids):
         try:
             return fs(ids)
         except Exception as e:
-            # print(f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
-            print('=================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
-            time.sleep(1)
+            print(f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
+            # print('=================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
+            # time.sleep(1)
 
 # global fileName
 
@@ -260,3 +260,7 @@ if __name__ == "__main__":
     for i in range(len(currentRTP[1])):
         currentRTP[2][i] = threading.Thread(target=fs2, args=(currentRTP[2][i],))
         currentRTP[2][i].start()
+
+
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+    #     executor.map(thread_function, range(10))

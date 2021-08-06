@@ -42,7 +42,7 @@ FS_BONUS_collected.clear()
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=1)
+    parser.add_argument('--sessions', type=int, default=50)
     parser.add_argument('--rounds', type=int, default=200)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser

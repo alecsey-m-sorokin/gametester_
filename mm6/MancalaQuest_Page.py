@@ -279,8 +279,6 @@ class API_MancalaQuest:
                                                   headers={'Connection': 'close'})
         # print('url = ', response_GetAsyncResponse.url)
         response = response_GetAsyncResponse.json()
-        url = response_GetAsyncResponse.url
-        # print('url =', url)
         # print('GetAsyncResponse = ', response)
         assert response_GetAsyncResponse.status_code == 200
         while "Error" in response:
