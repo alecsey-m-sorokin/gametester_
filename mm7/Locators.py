@@ -22,14 +22,16 @@ bets = [
 ]
 
 
-class APIdata_MancalaQuest:
+class APIdata_SpiritOtTheLake:
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
     DOMAIN = 'https://test-games-api.carhenge.space'
 
-    gameURL = 'https://test-mm6n-api.carhenge.space/'
-    # gameURL = 'https://mq-2-mm6n-api.carhenge.space/'
-    frontURL = 'https://stest.zhdun.space/mm6n/'
-    partnerURL = 'https://test-partners-api.carhenge.space/'
+    gameURL = 'https://m-2579-mm7n-api.carhenge.space/'
+    frontURL = 'https://review-global-sot-4gu0c1.carhenge.space/'
+    partnerURL = 'https://m-2579-partners-api.carhenge.space/'
+    # gameURL = 'https://test-mm6n-api.carhenge.space/'
+    # frontURL = 'https://stest.zhdun.space/mm6n/'
+    # partnerURL = 'https://test-partners-api.carhenge.space/'
 
     AuthorizationGame_Url = 'auth/AuthorizationGame'
     ResumeGame_Url = 'games/ResumeGame'
@@ -41,7 +43,7 @@ class APIdata_MancalaQuest:
     SelectCharacter_Url = 'bonus/SelectCharacter'
     MakeStep_Url = 'bonus/MakeStep'
 
-    partnerID = '382'
+    partnerID = '360'
     partnerID_rtp = '382'
     partnerID_rtp_90 = '476'
     partnerID_rtp_95 = '477'
@@ -53,8 +55,8 @@ class APIdata_MancalaQuest:
     start_users_rtp_95 = 20300  # 95%
     start_users_rtp_120 = 20900  # 120%
 
-    gameID = '19001'
-    userID = '368'
+    gameID = '20001'
+    userID = '55555'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'
@@ -65,9 +67,9 @@ class APIdata_MancalaQuest:
     mobile_platform = '&MobilePlatform=false'
     mm6_bonus = '&highfrequencybonus=true'
 
-    fileName_fs = 'mm6/' + ''
-    fileName_basic = 'mm6/' + 'test_mm6_basic_game.py'
-    fileName_rtp = 'mm6/' + 'test_mm6_rtp.py'
+    fileName_fs = 'mm7/' + ''
+    fileName_basic = 'mm7/' + 'test_mm7_basic_game.py'
+    fileName_rtp = 'mm7/' + 'test_mm7_rtp.py'
 
 
 

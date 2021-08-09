@@ -4,8 +4,10 @@ from subprocess import call
 from subprocess import Popen
 import os
 from mm6.Locators import APIdata_MancalaQuest
+from mm7.Locators import APIdata_SpiritOtTheLake
 
 A = APIdata_MancalaQuest
+S = APIdata_SpiritOtTheLake
 
 fileName_fs = 'mm5/' + 'test_mm5_free_spins.py'
 fileName_basic = 'mm5/' + 'test_mm5_basic_game.py'
@@ -23,6 +25,14 @@ def gameParser():
     mm5.add_argument('--rounds', type=int, default=10)
 
     mm6 = subparsers.add_parser('mm6')
+    mm6.add_argument('--strategy', default='basic')
+    mm6.add_argument('--sessions', type=int, default=1)
+    mm6.add_argument('--rounds', type=int, default=10)
+    mm6.add_argument('--rtp', type=int, default=A.partnerID)
+    mm6.add_argument('--users', type=int, default=3)
+    # mm6.add_argument('--userid', type=int, default=A.userID)
+
+    mm6 = subparsers.add_parser('mm76')
     mm6.add_argument('--strategy', default='basic')
     mm6.add_argument('--sessions', type=int, default=1)
     mm6.add_argument('--rounds', type=int, default=10)
@@ -77,6 +87,29 @@ elif namespace.command == "mm6":
 
     else:
         print("Что-то пошло не так...")
+
+elif namespace.command == "mm7":
+    print('using', sys.argv[0])
+    print(namespace)
+    print(f'command = {namespace.command}')
+    print(f'strategy = {namespace.strategy}')
+    print(f'sessions = {namespace.sessions}')
+    print(f'rounds = {namespace.rounds}')
+    print(f'rtp (partnerId) = {namespace.rtp}')
+    print(f'users = {namespace.users}')
+
+    if namespace.strategy == 'fs':
+        os.system(f'python {S.fileName_fs} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'basic':
+        os.system(f'python {S.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'rtp':
+        os.system(f'python {S.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds} --rtp {namespace.rtp} --users {namespace.users}')
+
+    else:
+        print("Что-то пошло не так...")
+
 
 else:
     print("Что-то пошло не так...")
