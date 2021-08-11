@@ -19,7 +19,7 @@ api = API_MancalaQuest
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=1)
+    parser.add_argument('--sessions', type=int, default=5)
     parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
     parser.add_argument('--users', type=int, default=30)

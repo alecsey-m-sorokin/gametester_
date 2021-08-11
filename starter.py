@@ -32,12 +32,12 @@ def gameParser():
     mm6.add_argument('--users', type=int, default=3)
     # mm6.add_argument('--userid', type=int, default=A.userID)
 
-    mm6 = subparsers.add_parser('mm76')
-    mm6.add_argument('--strategy', default='basic')
-    mm6.add_argument('--sessions', type=int, default=1)
-    mm6.add_argument('--rounds', type=int, default=10)
-    mm6.add_argument('--rtp', type=int, default=A.partnerID)
-    mm6.add_argument('--users', type=int, default=3)
+    mm7 = subparsers.add_parser('mm7')
+    mm7.add_argument('--strategy', default='basic')
+    mm7.add_argument('--sessions', type=int, default=1)
+    mm7.add_argument('--rounds', type=int, default=10)
+    mm7.add_argument('--rtp', type=int, default=A.partnerID)
+    mm7.add_argument('--users', type=int, default=3)
     # mm6.add_argument('--userid', type=int, default=A.userID)
 
     return parser

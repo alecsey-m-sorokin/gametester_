@@ -247,7 +247,8 @@ class API_MancalaQuest:
                                              headers={'Connection': 'close'})
         # response = response_CreditDebit.json()
         while response_CreditDebit.status_code != 200:
-            print('response CD bad= ', response_CreditDebit.status_code)
+            print('BAD response CreditDebit = ', response_CreditDebit)
+            print('BAD response CreditDebit status code = ', response_CreditDebit.status_code)
             response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
                                                  params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
                                                          'BetSum': betSum}, json=params_CreditDebit,
@@ -267,8 +268,8 @@ class API_MancalaQuest:
                                                          headers={'Connection': 'close'})
                         response = response_CreditDebit.json()
             except Exception as e:
-                print('Exception = ', e)
-                print2file('CreditDebit error.txt', response_CreditDebit)
+                print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit = ', e)
+                # print2file('CreditDebit error.txt', response_CreditDebit)
 
         assert response_CreditDebit.status_code == 200
         timeOut = response["Timeout"]
