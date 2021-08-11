@@ -4,7 +4,7 @@ import time
 import unittest
 import pytest
 import requests
-from Locators import APIdata_MancalaQuest, ErrorCodes
+from mm6.Locators import APIdata_MancalaQuest, ErrorCodes
 
 A = APIdata_MancalaQuest
 E = ErrorCodes
@@ -229,47 +229,139 @@ class API_MancalaQuest:
         return response
 
     @staticmethod
+    def CreditDebitError(RegToken, HH, betSum=A.betSum, cntLineBet=A.cntLineBet):
+        """
+        возвращает параметры: response, timeOut, tokenAsync
+        'tokenAsync' = jsonData.TokenAsync
+         """
+        HASH = hashlib.md5(('CreditDebit/' + RegToken + betSum + cntLineBet + A.gameKey).encode('utf-8')).hexdigest()
+        print('--- CreditDebit : ---------------------------------------------------------------------------------------')
+        print('hash_CreditDebit = ', HH)
+        params_CreditDebit = {'Hash': HH, 'Token': RegToken, 'CntLineBet': cntLineBet, 'BetSum': betSum}
+        print('params = ', params_CreditDebit)
+
+        with open('c:/testing/cd_bad.json') as json_file:
+            try:
+                response = json.load(json_file)
+                print('response = ', response)
+            except Exception as e:
+                print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit = ', e)
+                while e:
+                    try:
+                        print('1')
+                        with open('c:/testing/cd_bad.json') as json_file:
+                            response = json.load(json_file)
+                    except Exception as zzz:
+                        print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', zzz)
+                else:
+                    print('False')
+
+        print('=====')
+        # try:
+        #     if len(response) == 2:
+        #         print('response CD ok= ', response)
+        #     else:
+        #         while len(response) != 2:
+        #             with open('c:/testing/cd_ok.json') as json_file:
+        #                 response = json.load(json_file)
+        # except Exception as e:
+        #     print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit == ', e)
+        #
+        timeOut = response["Timeout"]
+        tokenAsync = response["TokenAsync"]
+        print(f'CreditDebit_TimeOut : {timeOut} / CreditDebit_TokenAsync : {tokenAsync}')
+        # return response
+        return response, timeOut, tokenAsync
+
+    @staticmethod
     def CreditDebit(RegToken, betSum=A.betSum, cntLineBet=A.cntLineBet):
         """
         возвращает параметры: response, timeOut, tokenAsync
         'tokenAsync' = jsonData.TokenAsync
          """
         HASH = hashlib.md5(('CreditDebit/' + RegToken + betSum + cntLineBet + A.gameKey).encode('utf-8')).hexdigest()
-        print(
-            '--- CreditDebit : ---------------------------------------------------------------------------------------')
+        print('--- CreditDebit : ---------------------------------------------------------------------------------------')
         print('hash_CreditDebit = ', HASH)
-        params_CreditDebit = {'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
-                              'BetSum': betSum}
+        params_CreditDebit = {'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet, 'BetSum': betSum}
         print('params = ', params_CreditDebit)
+        # response = {}
         response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
                                              params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
                                                      'BetSum': betSum}, json=params_CreditDebit,
                                              headers={'Connection': 'close'})
-        # response = response_CreditDebit.json()
+
         while response_CreditDebit.status_code != 200:
             print('BAD response CreditDebit = ', response_CreditDebit)
             print('BAD response CreditDebit status code = ', response_CreditDebit.status_code)
+            print('trying to make CreditDebit request ...')
             response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
-                                                 params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
+                                                 params={'Hash': HASH, 'Token': RegToken,
+                                                         'CntLineBet': cntLineBet,
                                                          'BetSum': betSum}, json=params_CreditDebit,
                                                  headers={'Connection': 'close'})
         else:
             response = response_CreditDebit.json()
-            try:
-                if len(response) == 2:
-                    print('response CD ok= ', response)
-                    print('Response_CreditDebit.status = ', response_CreditDebit.status_code)
-                else:
-                    while len(response) != 2:
-                        response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
-                                                         params={'Hash': HASH, 'Token': RegToken,
-                                                                 'CntLineBet': cntLineBet,
-                                                                 'BetSum': betSum}, json=params_CreditDebit,
-                                                         headers={'Connection': 'close'})
-                        response = response_CreditDebit.json()
-            except Exception as e:
-                print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit = ', e)
-                # print2file('CreditDebit error.txt', response_CreditDebit)
+            if not response["Timeout"] and not response["TokenAsync"]:
+                print('Empty JSON')
+            else:
+                response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+                                                     params={'Hash': HASH, 'Token': RegToken,
+                                                             'CntLineBet': cntLineBet,
+                                                             'BetSum': betSum}, json=params_CreditDebit,
+                                                     headers={'Connection': 'close'})
+                response = response_CreditDebit.json()
+
+        # while response_CreditDebit.status_code != 200:
+        #     print('trying to make CreditDebit request ...')
+        #     response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+        #                                              params={'Hash': HASH, 'Token': RegToken,
+        #                                                      'CntLineBet': cntLineBet,
+        #                                                      'BetSum': betSum}, json=params_CreditDebit,
+        #                                              headers={'Connection': 'close'})
+        # else:
+        #     try:
+        #         response = response_CreditDebit.json()
+        #     except Exception as e:
+        #         print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', e)
+        #         while e:
+        #             try:
+        #                 response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+        #                                                      params={'Hash': HASH, 'Token': RegToken,
+        #                                                              'CntLineBet': cntLineBet,
+        #                                                              'BetSum': betSum}, json=params_CreditDebit,
+        #                                                      headers={'Connection': 'close'})
+        #                 response = response_CreditDebit.json()
+        #             except Exception as ee:
+        #                 print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', ee)
+        #         else:
+        #             pass
+        #
+        # print('response = ', response)
+
+        # while response_CreditDebit.status_code != 200:
+        #     print('BAD response CreditDebit = ', response_CreditDebit)
+        #     print('BAD response CreditDebit status code = ', response_CreditDebit.status_code)
+        #     response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+        #                                          params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
+        #                                                  'BetSum': betSum}, json=params_CreditDebit,
+        #                                          headers={'Connection': 'close'})
+        # else:
+        #     response = response_CreditDebit.json()
+        #     try:
+        #         if len(response) == 2:
+        #             print('response CD ok= ', response)
+        #             print('Response_CreditDebit.status = ', response_CreditDebit.status_code)
+        #         else:
+        #             while len(response) != 2:
+        #                 response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+        #                                                  params={'Hash': HASH, 'Token': RegToken,
+        #                                                          'CntLineBet': cntLineBet,
+        #                                                          'BetSum': betSum}, json=params_CreditDebit,
+        #                                                  headers={'Connection': 'close'})
+        #                 response = response_CreditDebit.json()
+        #     except Exception as e:
+        #         print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit = ', e)
+        #         # print2file('CreditDebit error.txt', response_CreditDebit)
 
         assert response_CreditDebit.status_code == 200
         timeOut = response["Timeout"]
