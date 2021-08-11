@@ -1,9 +1,11 @@
 import argparse
 import json
 import sys
+import datetime
+import time
 
-from mm6.Locators import RTP, APIdata_MancalaQuest
-from mm6.MancalaQuest_Page import API_MancalaQuest
+from mm6.Locators import APIdata_MancalaQuest
+from mm6.MancalaQuest_Page import RTP, API_MancalaQuest, print2file, write_data_to_json_file
 
 
 def findall(v, k):
@@ -70,3 +72,27 @@ setRTP = RTP(users, rtp)
 currentRTP = setRTP.setRTP()
 
 print(currentRTP)
+
+dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
+# fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
+
+try:
+    with open('c:/testing/cd_bad.json') as json_file:
+        response = json.load(json_file)
+        response_str = json.dumps(response)
+        print(len(response))
+        print(response)
+        print(response_str)
+        print2file('!!!.txt', response)
+        # write_data_to_json_file('errors', response)
+
+except Exception as xxx:
+    print('Exception = ', xxx)
+    # print2file('exceptions.txt', str(xxx))
+
+# with open('c:/testing/cd_bad.json') as json_file:
+#     response = json.load(json_file)
+#     response_str = json.dumps(response)
+#
+# print(response)
+# print(response_str)

@@ -23,6 +23,7 @@ bets = [
 
 
 class APIdata_MancalaQuest:
+
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
     DOMAIN = 'https://test-games-api.carhenge.space'
 
@@ -41,7 +42,7 @@ class APIdata_MancalaQuest:
     SelectCharacter_Url = 'bonus/SelectCharacter'
     MakeStep_Url = 'bonus/MakeStep'
 
-    partnerID = '382'
+    partnerID = '360'
     partnerID_rtp = '382'
     partnerID_rtp_90 = '476'
     partnerID_rtp_95 = '477'
@@ -50,11 +51,12 @@ class APIdata_MancalaQuest:
     partnerID_rtp_120 = '480'
 
     start_users_rtp_90 = 20500  # 90%
+    # start_users_rtp_95 = 10500  # 95%
     start_users_rtp_95 = 20300  # 95%
     start_users_rtp_120 = 20900  # 120%
 
     gameID = '19001'
-    userID = '368'
+    userID = '20308'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'

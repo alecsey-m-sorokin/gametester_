@@ -19,10 +19,10 @@ api = API_MancalaQuest
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=200)
+    parser.add_argument('--sessions', type=int, default=1)
     parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
-    parser.add_argument('--users', type=int, default=10)
+    parser.add_argument('--users', type=int, default=30)
     return parser
 
 
@@ -58,13 +58,13 @@ r = 0
 i = 0
 
 def fs2(ids):
+    # return fs(ids)
+
     while True:
         try:
             return fs(ids)
         except Exception as e:
-            print(f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
-            # print('=================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
-            # time.sleep(1)
+            print(f'/ userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
 
 # global fileName
 
@@ -80,6 +80,7 @@ def fs(ids):
     globalWins = []
     globalWinsFS = []
     dt_start = time.time()
+    dt_start_2 = datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")
     fsLabel = ''
 
     FS_WILD_collected_count = []
@@ -112,27 +113,21 @@ def fs(ids):
 
         if resultId is not None:
             resumeGame, timeOut, tokenAsyncResumeGame = api.ResumeGame(regToken, resultId)
-            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(
-                regToken, timeOut, tokenAsyncResumeGame)
+            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsyncResumeGame)
 
             if totalFreeSpinsCount:
                 freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinId)
-                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
-                    regToken, timeOut, tokenAsyncFreeSpin)
-                print2(
-                    f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
+                print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                 globalWinsFS.clear()
-                globalWinsFS.append(getAsyncResponse["WinInfo"][
-                                        "CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
+                globalWinsFS.append(getAsyncResponse["WinInfo"]["CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
                 globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('globalWinsFS = ', globalWinsFS)
                 while remainingFreeSpinsCount > 0:
                     freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinIdFs)
-                    getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
-                        regToken, timeOut, tokenAsyncFreeSpin)
-                    print2(
-                        f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                    getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
+                    print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                     print2(str(getAsyncResponseFreeSpin))
                     globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                     print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
@@ -141,11 +136,9 @@ def fs(ids):
                 print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
                 print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
                 if not bonusGameResult:
-                    FS_WILD_collected_winnings.append(
-                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
+                    FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
                 else:
-                    FS_BONUS_collected_winnings.append(
-                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
+                    FS_BONUS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
             else:
                 pass
 
@@ -155,17 +148,16 @@ def fs(ids):
         while i < rounds:  # выставляем количество спинов (вращений)
             print2(f'\nspin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids}')
             creditDebit, timeOut, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)
-            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(
-                regToken, timeOut, tokenAsync)
+            getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsync)
             print2(str(getAsyncResponse))
             printAR(coin)
             if bonusGameResult:
                 fsLabel = 'BONUS GAME`s'
                 print2('! you WIN !')
                 print2(bonusGameResult)
+                FS_BONUS_collected_count.append(totalFreeSpinsCount)
             elif not bonusGameResult and totalFreeSpinsCount:
-                FS_WILD_collected_count.append(
-                    totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок от WILD символов
+                FS_WILD_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок от WILD символов
                 fsLabel = 'WILD`s'
 
             if totalFreeSpinsCount:
@@ -173,15 +165,12 @@ def fs(ids):
                 тут начинаются Фри спины, полученные в результате выпадения Wild- символов слева и справа
                 """
                 freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinId)
-                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
-                    regToken, timeOut, tokenAsyncFreeSpin)
-                print2(
-                    f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(regToken, timeOut, tokenAsyncFreeSpin)
+                print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                 print2(str(getAsyncResponseFreeSpin))
                 globalWinsFS.clear()
                 # FS_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок
-                globalWinsFS.append(getAsyncResponse["WinInfo"][
-                                        "CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
+                globalWinsFS.append(getAsyncResponse["WinInfo"]["CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
                 globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('globalWinsFS = ', globalWinsFS)
@@ -189,8 +178,7 @@ def fs(ids):
                     freeSpin, timeOut, tokenAsyncFreeSpin = api.FreeSpin(regToken, resultId, spinIdFs)
                     getAsyncResponseFreeSpin, remainingFreeSpinsCount, totalFreeSpinsCount, spinIdFs = api.GetAsyncResponse_FreeSpin(
                         regToken, timeOut, tokenAsyncFreeSpin)
-                    print2(
-                        f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
+                    print2(f'\n----- Mancala Quest {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
                     print2(str(getAsyncResponseFreeSpin))
                     globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                     print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
@@ -200,11 +188,9 @@ def fs(ids):
                 print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
                 # FS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов
                 if not bonusGameResult:
-                    FS_WILD_collected_winnings.append(
-                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
+                    FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
                 else:
-                    FS_BONUS_collected_winnings.append(
-                        sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
+                    FS_BONUS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
 
             else:
                 pass
@@ -245,6 +231,9 @@ def fs(ids):
     print2('Bonus collected: ', FS_BONUS_collected)
 
     print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
+    print2(f'start time = {dt_start_2}')
+    print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
+    # print2(f'start time = {timedelta(seconds=round(dt_start))} / end time = {timedelta(seconds=round(time.time))}')
     print2('the end')
     # logging.info(f'Thread {ids}: finishing')
 

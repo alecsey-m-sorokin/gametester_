@@ -245,13 +245,35 @@ class API_MancalaQuest:
                                              params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
                                                      'BetSum': betSum}, json=params_CreditDebit,
                                              headers={'Connection': 'close'})
-        # print('url = ', response_CreditDebit.url)
-        response = response_CreditDebit.json()
+        # response = response_CreditDebit.json()
+        while response_CreditDebit.status_code != 200:
+            print('response CD bad= ', response_CreditDebit.status_code)
+            response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+                                                 params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
+                                                         'BetSum': betSum}, json=params_CreditDebit,
+                                                 headers={'Connection': 'close'})
+        else:
+            response = response_CreditDebit.json()
+            try:
+                if len(response) == 2:
+                    print('response CD ok= ', response)
+                    print('Response_CreditDebit.status = ', response_CreditDebit.status_code)
+                else:
+                    while len(response) != 2:
+                        response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+                                                         params={'Hash': HASH, 'Token': RegToken,
+                                                                 'CntLineBet': cntLineBet,
+                                                                 'BetSum': betSum}, json=params_CreditDebit,
+                                                         headers={'Connection': 'close'})
+                        response = response_CreditDebit.json()
+            except Exception as e:
+                print('Exception = ', e)
+                print2file('CreditDebit error.txt', response_CreditDebit)
+
         assert response_CreditDebit.status_code == 200
         timeOut = response["Timeout"]
         tokenAsync = response["TokenAsync"]
         print(f'CreditDebit_TimeOut : {timeOut} / CreditDebit_TokenAsync : {tokenAsync}')
-        # print(response)
         response_CreditDebit.close()
         return response, timeOut, tokenAsync
 
