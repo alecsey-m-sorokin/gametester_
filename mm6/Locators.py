@@ -56,7 +56,7 @@ class APIdata_MancalaQuest:
     start_users_rtp_120 = 20900  # 120%
 
     gameID = '19001'
-    userID = '20308'
+    userID = '55555'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'
