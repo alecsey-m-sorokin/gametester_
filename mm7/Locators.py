@@ -56,11 +56,11 @@ class APIdata_SpiritOtTheLake:
     start_users_rtp_120 = 20900  # 120%
 
     gameID = '20001'
-    userID = '55555'
+    userID = '666666'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'
-    cntLineBet = '25'
+    cntLineBet = '20'
     TokenAsync = ''
     TokenAsync_2 = ''
     CardIndex = '2'

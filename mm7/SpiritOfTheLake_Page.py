@@ -313,19 +313,19 @@ class API_SpiritOfTheLake:
             print("RemainingFreeSpinsCount =", remainingFreeSpinsCount)
             bonusGameResult = {}
             if 'UserSavedState' not in response["SpinResult"]:
-                print('no MASK bonus game ...')
+                print('no bonus game ...')
                 FreeSpinCount = 0
                 Multiplier = 0
-                WinState = 0
+                Freespin = 0
             else:
                 print('Spirit Save State !')
                 bonusGameResult = findall(response, "Bonuses")
                 print('Bonuses = ', bonusGameResult)
                 print('Multiplier = ', bonusGameResult[0]["Multiplier"])
+                print('Freespin = ', bonusGameResult[0]["Freespin"])
                 if bonusGameResult is not None:
-                    print('bonus game is finished !')
-                    print(
-                        f'{bonusGameResult[0]["Multiplier"]} {bonusGameResult[0]["Freespin"]} {bonusGameResult[0]["Flowers"]} {bonusGameResult[0]["BetPerLine"]}')
+                    # print('bonus game is finished !')
+                    print(f'{bonusGameResult[0]["Multiplier"]} {bonusGameResult[0]["Freespin"]} {bonusGameResult[0]["Flowers"]} {bonusGameResult[0]["BetPerLine"]}')
                     # FreeSpinCount = bonusGameResult["WinState"]
                     Multiplier = bonusGameResult[0]["Multiplier"]
                     # WinState = bonusGameResult["Multiplier"]
