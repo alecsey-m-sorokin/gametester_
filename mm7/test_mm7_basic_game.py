@@ -25,6 +25,7 @@ globalBets = []
 globalWins = []
 globalWinsFS = []
 dt_start = time.time()
+dt_start_2 = datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")
 fsLabel = ''
 
 FS_WILD_collected_count = []
@@ -43,7 +44,7 @@ def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=30)
+    parser.add_argument('--rounds', type=int, default=3)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
@@ -162,33 +163,34 @@ while r < sessions:  # set the number of rounds (sessions)
     r = r + 1
 
     print2('\n')
-    print2('finished "Spirit OfThe Lake" session after %s spins' % i)
-    print2('totalWins ', totalWins)
-    print2('sum totalWins ', sum(totalWins))
-    print2('totalBets ', totalBets)
-    print2('sum totalBets ', sum(totalBets))
+    print2(f'finished "Spirit OfThe Lake" session after {i} spins')
+    print2(f'totalWins = {totalWins}')
+    print2(f'sum totalWins = {sum(totalWins)}')
+    print2(f'totalBets = {totalBets}')
+    print2(f'sum totalBets = {sum(totalBets)}')
     globalBets.append(sum(totalBets))
     totalWins.clear()
     totalBets.clear()
     authorizationGame, balance, balanceReal, coin, currency, remainingFreeSpinsCount, func = api.AuthorizationGame(regToken)
     globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) * coin * i), 2))
-    print2('globalWins', globalWins)
-    print2('sum globalWins ', round(sum(globalWins), 2))
-    print2("Balance =", balance)
-    print2("Balance Real =", balanceReal)
+    print2(f'globalWins = {globalWins}')
+    print2(f'sum globalWins = {round(sum(globalWins), 2)}')
+    print2(f'Balance = {balance}')
+    print2(f'Balance Real = {balanceReal}')
     i = 0
 
 print2('\n')
-print2('finished "Spirit OfThe Lake" after %s rounds' % r)
-print2('total bets = ', sum(globalBets) * coin)
-print2('total wins = ', round(sum(globalWins), 2))
-print2('WILD free spins collected by player in all (%s) sessions: ' % r, FS_WILD_collected_count)
-print2('BONUS GAME free spins collected by player in all (%s) sessions: ' % r, FS_BONUS_collected_count)
-print2('%s win in each WILD`s free spins round: ' % currency, FS_WILD_collected_winnings)
-print2('%s win in each BONUS free spins round: ' % currency, FS_BONUS_collected_winnings)
-print2('Bonus collected: ', FS_BONUS_collected)
-
+print2(f'finished "Spirit Of The Lake" after {r} rounds')
+print2(f'total bets = {sum(globalBets) * coin}')
+print2(f'total wins = {round(sum(globalWins), 2)}')
+print2(f'free spins collected by player in all ({r}) sessions: \n{FS_WILD_collected_count}')
+# print2('BONUS GAME free spins collected by player in all (%s) sessions: ' % r, FS_BONUS_collected_count)
+print2(f'{currency} win in each free spins round: \n{FS_WILD_collected_winnings}')
+# print2('%s win in each BONUS free spins round: ' % currency, FS_BONUS_collected_winnings)
+# print2('Bonus collected: ', FS_BONUS_collected)
 print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
+print2(f'start time = {dt_start_2}')
+print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
 print2('the end')
 
 if __name__ == "__main__":

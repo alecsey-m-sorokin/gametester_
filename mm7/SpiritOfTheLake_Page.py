@@ -108,6 +108,10 @@ class RTP:
             self.start_users_rtp = A.start_users_rtp_90
         if self.currentRTP == 95:
             self.start_users_rtp = A.start_users_rtp_95
+        # if self.currentRTP == 96:
+        #     self.start_users_rtp = A.start_users_rtp_96
+        # if self.currentRTP == 97:
+        #     self.start_users_rtp = A.start_users_rtp_97
         if self.currentRTP == 120:
             self.start_users_rtp = A.start_users_rtp_120
         else:
@@ -313,28 +317,15 @@ class API_SpiritOfTheLake:
             print("RemainingFreeSpinsCount =", remainingFreeSpinsCount)
             bonusGameResult = {}
             if 'UserSavedState' not in response["SpinResult"]:
-                print('no bonus game ...')
-                FreeSpinCount = 0
-                Multiplier = 0
-                Freespin = 0
+                print('no Spirit Save State ...')
             else:
-                print('Spirit Save State !')
+                print('-Spirit Save State-----')
                 bonusGameResult = findall(response, "Bonuses")
                 print('Bonuses = ', bonusGameResult)
-                print('Multiplier = ', bonusGameResult[0]["Multiplier"])
-                print('Freespin = ', bonusGameResult[0]["Freespin"])
                 if bonusGameResult is not None:
-                    # print('bonus game is finished !')
-                    print(f'{bonusGameResult[0]["Multiplier"]} {bonusGameResult[0]["Freespin"]} {bonusGameResult[0]["Flowers"]} {bonusGameResult[0]["BetPerLine"]}')
-                    # FreeSpinCount = bonusGameResult["WinState"]
-                    Multiplier = bonusGameResult[0]["Multiplier"]
-                    # WinState = bonusGameResult["Multiplier"]
-                    BetPerLine = bonusGameResult[0]["BetPerLine"]
-                    Flowers = bonusGameResult[0]["Flowers"]
-                    FreeSpins = bonusGameResult[0]["Freespin"]
-                    Multiplier = bonusGameResult[0]["Multiplier"]
+                    print(f'Multiplier = {bonusGameResult[0]["Multiplier"]} Freespin = {bonusGameResult[0]["Freespin"]} Flowers = {bonusGameResult[0]["Flowers"]} BetPerLine = {bonusGameResult[0]["BetPerLine"]}')
                 else:
-                    print('bonus game is not finished yet ...')
+                    print('no Spirit bonus game ...')
 
         def printAR(coin):
             betSum = response["BetSum"]
@@ -350,194 +341,6 @@ class API_SpiritOfTheLake:
             response_GetAsyncResponse.close()
 
         return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult
-
-    @staticmethod
-    def GetMancalaQuestGameState(RegToken, ResultId, BonusGameId, SpinId):
-        """
-        возвращает параметры: response, tokenAsync
-        'tokenAsync' = jsonData.TokenAsync
-         """
-        HASH = hashlib.md5(
-            ('GetMancalaQuestGameState/' + RegToken + SpinId + BonusGameId + ResultId + A.gameKey).encode(
-                'utf-8')).hexdigest()
-        print('hash_GetMancalaQuestGameState = ', HASH)
-        params_GetMancalaQuestGameState = {"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                           "BonusGameId": BonusGameId, "SpinId": SpinId}
-        response_GetMancalaQuestGameState = requests.post(A.gameURL + '/bonus/GetMancalaQuestGameState',
-                                                          params={"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                                                  "BonusGameId": BonusGameId, "SpinId": SpinId},
-                                                          json=params_GetMancalaQuestGameState, timeout=1,
-                                                          headers={'Connection': 'close'})
-        response = response_GetMancalaQuestGameState.json()
-        assert response_GetMancalaQuestGameState.status_code == 200
-        print(response)
-        tokenAsyncGetMancalaQuestGameState = response["TokenAsync"]
-        print('GetMancalaQuestGameState_TokenAsync = ', response['TokenAsync'])
-        # response_GetMancalaQuestGameState.close()
-        return response, tokenAsyncGetMancalaQuestGameState
-
-    @staticmethod
-    def GetAsyncResponse_QuestGameState(RegToken, TokenAsyncGetMancalaQuestGameState):
-        HASH = hashlib.md5(
-            ('GetAsyncResponse/' + RegToken + TokenAsyncGetMancalaQuestGameState + A.gameKey).encode(
-                'utf-8')).hexdigest()
-        print('hash_GetAsyncResponseQuestGameState = ', HASH)
-        params_GetAsyncResponse_QuestGameState = {'Hash': HASH, 'Token': RegToken,
-                                                  'TokenAsync': TokenAsyncGetMancalaQuestGameState}
-        response_GetAsyncResponse_QuestGameState = requests.post(A.gameURL + '/games/GetAsyncResponse',
-                                                                 params={'Hash': HASH, 'Token': RegToken,
-                                                                         'TokenAsync': TokenAsyncGetMancalaQuestGameState},
-                                                                 json=params_GetAsyncResponse_QuestGameState, timeout=1,
-                                                                 headers={'Connection': 'close'})
-        response = response_GetAsyncResponse_QuestGameState.json()
-        assert response_GetAsyncResponse_QuestGameState.status_code == 200
-        while "Error" in response:
-            response_GetAsyncResponse_QuestGameState = requests.post(A.gameURL + '/games/GetAsyncResponse',
-                                                                     params={'Hash': HASH, 'Token': RegToken,
-                                                                             'TokenAsync': TokenAsyncGetMancalaQuestGameState},
-                                                                     json=params_GetAsyncResponse_QuestGameState,
-                                                                     timeout=1,
-                                                                     headers={'Connection': 'close'})
-            response = response_GetAsyncResponse_QuestGameState.json()
-        else:
-            print('params = ', params_GetAsyncResponse_QuestGameState)
-            print("Response =", response)
-            ActiveCharacterIndex = response["ActiveCharacterIndex"]
-            CharacterIndex = response["CharacterIndex"]
-            Cups = response["Cups"]
-        # response_GetAsyncResponse_QuestGameState.close()
-        return response, ActiveCharacterIndex, CharacterIndex, Cups
-
-    @staticmethod
-    def SelectCharacter(RegToken, ResultId, BonusGameId, SpinId, CharacterId):
-        """
-        возвращает параметры: response, tokenAsync
-        'tokenAsync' = jsonData.TokenAsync
-         """
-        HASH = hashlib.md5(
-            ('SelectCharacter/' + RegToken + CharacterId + BonusGameId + ResultId + A.gameKey).encode(
-                'utf-8')).hexdigest()
-        print('hash_SelectCharacter = ', HASH)
-        params_SelectCharacter = {"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                  "BonusGameId": BonusGameId, "SpinId": SpinId, "CharacterId": CharacterId}
-        response_SelectCharacter = requests.post(A.gameURL + '/bonus/SelectCharacter',
-                                                 params={"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                                         "BonusGameId": BonusGameId, "SpinId": SpinId,
-                                                         "CharacterId": CharacterId},
-                                                 json=params_SelectCharacter, timeout=1,
-                                                 headers={'Connection': 'close'})
-        response = response_SelectCharacter.json()
-        url = response_SelectCharacter.url
-        # print('url = ', url)
-        print('params = ', params_SelectCharacter)
-        print('response = ', response)
-        assert response_SelectCharacter.status_code == 200
-        tokenAsyncSelectCharacter = response["TokenAsync"]
-        # print(response)
-        print('SelectCharacter_TokenAsync = ', response['TokenAsync'])
-        # response_SelectCharacter.close()
-        return response, tokenAsyncSelectCharacter
-
-    @staticmethod
-    def GetAsyncResponse_SelectCharacter(RegToken, tokenAsyncSelectCharacter):
-        HASH = hashlib.md5(
-            ('GetAsyncResponse/' + RegToken + tokenAsyncSelectCharacter + A.gameKey).encode('utf-8')).hexdigest()
-        print('hash_GetAsyncResponseSelectCharacter = ', HASH)
-        params_GetAsyncResponse_SelectCharacter = {'Hash': HASH, 'Token': RegToken,
-                                                   'TokenAsync': tokenAsyncSelectCharacter}
-        response_GetAsyncResponse_SelectCharacter = requests.post(A.gameURL + '/games/GetAsyncResponse',
-                                                                  params={'Hash': HASH, 'Token': RegToken,
-                                                                          'TokenAsync': tokenAsyncSelectCharacter},
-                                                                  json=params_GetAsyncResponse_SelectCharacter,
-                                                                  timeout=1,
-                                                                  headers={'Connection': 'close'})
-        response = response_GetAsyncResponse_SelectCharacter.json()
-        # print('GetAsyncResponse_SelectCharacter = ', response)
-        assert response_GetAsyncResponse_SelectCharacter.status_code == 200
-        while "Error" in response:
-            response_GetAsyncResponse_SelectCharacter = requests.post(A.gameURL + '/games/GetAsyncResponse',
-                                                                      params={'Hash': HASH, 'Token': RegToken,
-                                                                              'TokenAsync': tokenAsyncSelectCharacter},
-                                                                      json=params_GetAsyncResponse_SelectCharacter,
-                                                                      timeout=1, headers={'Connection': 'close'})
-            response = response_GetAsyncResponse_SelectCharacter.json()
-        else:
-            print('params = ', params_GetAsyncResponse_SelectCharacter)
-            print("response =", response)
-            Character = response["Character"]
-            print("Character = ", Character)
-        # response_GetAsyncResponse_SelectCharacter.close()
-        return response, Character
-
-    @staticmethod
-    def MakeStep(RegToken, ResultId, BonusGameId, SpinId):
-        """
-        возвращает параметры: response, tokenAsync
-        'tokenAsync' = jsonData.TokenAsync
-         """
-        HASH = hashlib.md5(
-            ('MakeStep/' + RegToken + SpinId + BonusGameId + ResultId + A.gameKey).encode('utf-8')).hexdigest()
-        print('hash_MakeStep = ', HASH)
-        params_MakeStep = {"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                           "BonusGameId": BonusGameId, "SpinId": SpinId}
-        response_MakeStep = requests.post(A.gameURL + '/bonus/MakeStep',
-                                          params={"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                                  "BonusGameId": BonusGameId, "SpinId": SpinId},
-                                          json=params_MakeStep, timeout=1,
-                                          headers={'Connection': 'close'})
-        response = response_MakeStep.json()
-        print('params_MakeStep = ', params_MakeStep)
-        print('response = ', response)
-        assert response_MakeStep.status_code == 200
-        tokenAsyncMakeStep = response["TokenAsync"]
-        print('MakeStep_TokenAsync = ', response['TokenAsync'])
-        # response_MakeStep.close()
-        return response, tokenAsyncMakeStep
-
-    @staticmethod
-    def GetAsyncResponse_MakeStep(RegToken, tokenAsyncMakeStep):
-        HASH = hashlib.md5(
-            ('GetAsyncResponse/' + RegToken + tokenAsyncMakeStep + A.gameKey).encode('utf-8')).hexdigest()
-        print('hash_GetAsyncResponseMakeStep = ', HASH)
-        params_GetAsyncResponse_MakeStep = {'Hash': HASH, 'Token': RegToken,
-                                            'TokenAsync': tokenAsyncMakeStep}
-        response_GetAsyncResponse_MakeStep = requests.post(A.gameURL + '/games/GetAsyncResponse',
-                                                           params={'Hash': HASH, 'Token': RegToken,
-                                                                   'TokenAsync': tokenAsyncMakeStep},
-                                                           json=params_GetAsyncResponse_MakeStep,
-                                                           timeout=1,
-                                                           headers={'Connection': 'close'})
-        response = response_GetAsyncResponse_MakeStep.json()
-        # print('GetAsyncResponse_SelectCharacter = ', response)
-        assert response_GetAsyncResponse_MakeStep.status_code == 200
-        while "Error" in response:
-            response_GetAsyncResponse_MakeStep = requests.post(A.gameURL + '/games/GetAsyncResponse',
-                                                               params={'Hash': HASH, 'Token': RegToken,
-                                                                       'TokenAsync': tokenAsyncMakeStep},
-                                                               json=params_GetAsyncResponse_MakeStep,
-                                                               timeout=1, headers={'Connection': 'close'})
-            response = response_GetAsyncResponse_MakeStep.json()
-        else:
-            if "WinStateInfo" not in response:
-                FreeSpinCount = 0
-                Multiplier = 0
-            else:
-                FreeSpinCount = response["WinStateInfo"]["FreeSpinCount"]
-                Multiplier = response["WinStateInfo"]["Multiplier"]
-            print('params_GetAsyncResponse_MakeStep = ', params_GetAsyncResponse_MakeStep)
-            print("Response =", response)
-            print('FreeSpinCount = ', FreeSpinCount)
-            print('Multiplier = ', Multiplier)
-            ActiveCharacterIndex = response["ActiveCharacterIndex"]
-            # CupIndex = response["CupIndex"]
-            # Cups = response["Cups"]
-            # Steals = response["Steals"]
-            # print("ActiveCharacterIndex = ", ActiveCharacterIndex)
-            # print("CupIndex = ", CupIndex)
-            # print("Cups = ", Cups)
-            # print("Steals = ", Steals)
-        # response_GetAsyncResponse_SelectCharacter.close()
-        return response, ActiveCharacterIndex, FreeSpinCount, Multiplier
 
     @staticmethod
     def FreeSpin(RegToken, ResultId, SpinId):
