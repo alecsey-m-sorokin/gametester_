@@ -6,6 +6,7 @@ import time
 import unittest
 from random import randint
 import pytest
+import requests
 from parameterized import parameterized
 from Locators import bets, APIdata_MancalaQuest
 from MancalaQuest_Page import API_MancalaQuest, Logger
@@ -42,8 +43,8 @@ FS_BONUS_collected.clear()
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=2)
+    parser.add_argument('--sessions', type=int, default=5)
+    parser.add_argument('--rounds', type=int, default=3)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
@@ -190,6 +191,23 @@ print2('Bonus collected: ', FS_BONUS_collected)
 
 print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
 print2('the end')
+
+token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
+id_bot = 72220000235
+id_chat = 323826
+text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
+           f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
+
+
+def send_message(text):
+    url = F"https://bot.reddy.team/bot{token_bot}/send?chat={id_chat}&msg={text_bot}"
+    response = requests.get(url)
+    print(response)
+    print('Сообщение отправлено')
+
+
+send_message(text_bot)
+
 
 if __name__ == "__main__":
     unittest.main()

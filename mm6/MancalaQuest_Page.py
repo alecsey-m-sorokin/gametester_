@@ -290,53 +290,53 @@ class API_MancalaQuest:
                                                      'BetSum': betSum}, json=params_CreditDebit,
                                              headers={'Connection': 'close'})
 
-        while response_CreditDebit.status_code != 200:
-            print('BAD response CreditDebit = ', response_CreditDebit)
-            print('BAD response CreditDebit status code = ', response_CreditDebit.status_code)
-            print('trying to make CreditDebit request ...')
-            response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
-                                                 params={'Hash': HASH, 'Token': RegToken,
-                                                         'CntLineBet': cntLineBet,
-                                                         'BetSum': betSum}, json=params_CreditDebit,
-                                                 headers={'Connection': 'close'})
-        else:
-            response = response_CreditDebit.json()
-            if not response["Timeout"] and not response["TokenAsync"]:
-                print('Empty JSON')
-            else:
-                response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
-                                                     params={'Hash': HASH, 'Token': RegToken,
-                                                             'CntLineBet': cntLineBet,
-                                                             'BetSum': betSum}, json=params_CreditDebit,
-                                                     headers={'Connection': 'close'})
-                response = response_CreditDebit.json()
-
         # while response_CreditDebit.status_code != 200:
+        #     print('BAD response CreditDebit = ', response_CreditDebit)
+        #     print('BAD response CreditDebit status code = ', response_CreditDebit.status_code)
         #     print('trying to make CreditDebit request ...')
         #     response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+        #                                          params={'Hash': HASH, 'Token': RegToken,
+        #                                                  'CntLineBet': cntLineBet,
+        #                                                  'BetSum': betSum}, json=params_CreditDebit,
+        #                                          headers={'Connection': 'close'})
+        # else:
+        #     response = response_CreditDebit.json()
+        #     if not response["Timeout"] and not response["TokenAsync"]:
+        #         print('Empty JSON')
+        #     else:
+        #         response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
         #                                              params={'Hash': HASH, 'Token': RegToken,
         #                                                      'CntLineBet': cntLineBet,
         #                                                      'BetSum': betSum}, json=params_CreditDebit,
         #                                              headers={'Connection': 'close'})
-        # else:
-        #     try:
         #         response = response_CreditDebit.json()
-        #     except Exception as e:
-        #         print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', e)
-        #         while e:
-        #             try:
-        #                 response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
-        #                                                      params={'Hash': HASH, 'Token': RegToken,
-        #                                                              'CntLineBet': cntLineBet,
-        #                                                              'BetSum': betSum}, json=params_CreditDebit,
-        #                                                      headers={'Connection': 'close'})
-        #                 response = response_CreditDebit.json()
-        #             except Exception as ee:
-        #                 print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', ee)
-        #         else:
-        #             pass
-        #
-        # print('response = ', response)
+
+        while response_CreditDebit.status_code != 200:
+            print('trying to make CreditDebit request ...')
+            response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+                                                     params={'Hash': HASH, 'Token': RegToken,
+                                                             'CntLineBet': cntLineBet,
+                                                             'BetSum': betSum}, json=params_CreditDebit,
+                                                     headers={'Connection': 'close'})
+        else:
+            try:
+                response = response_CreditDebit.json()
+            except Exception as e:
+                print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', e)
+                while e:
+                    try:
+                        response_CreditDebit = requests.post(A.gameURL + A.CreditDebit_Url,
+                                                             params={'Hash': HASH, 'Token': RegToken,
+                                                                     'CntLineBet': cntLineBet,
+                                                                     'BetSum': betSum}, json=params_CreditDebit,
+                                                             headers={'Connection': 'close'})
+                        response = response_CreditDebit.json()
+                    except Exception as ee:
+                        print('Exception = !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! credit debit bad json = ', ee)
+                else:
+                    pass
+
+        print('response = ', response)
 
         # while response_CreditDebit.status_code != 200:
         #     print('BAD response CreditDebit = ', response_CreditDebit)
