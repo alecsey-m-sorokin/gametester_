@@ -122,7 +122,7 @@ print('the end')
 
 token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
 id_bot = 72220000235
-id_chat = 32Oracle0025000219744537
+id_chat = 3244537
 text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
