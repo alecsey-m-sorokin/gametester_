@@ -6,6 +6,7 @@ import time
 import unittest
 from random import randint
 import pytest
+import requests
 from parameterized import parameterized
 from locators import APIdata_PortalMaster, bets
 from mm5_PM_Page import API_PortalMaster
@@ -118,6 +119,21 @@ print('total bets = ', sum(globalBets) / 125)
 print('total wins = ', round(sum(globalWins), 2))
 print('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
 print('the end')
+
+token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
+id_bot = 72220000235
+id_chat = 32Oracle0025000219744537
+text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
+           f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
+
+def send_message(text):
+    url = F"https://bot.reddy.team/bot{token_bot}/send?chat={id_chat}&msg={text_bot}"
+    response = requests.get(url)
+    print(response)
+    print('Сообщение отправлено')
+
+send_message(text_bot)
+
 
 if __name__ == "__main__":
     unittest.main()

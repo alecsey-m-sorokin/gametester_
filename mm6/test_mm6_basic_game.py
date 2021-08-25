@@ -43,7 +43,7 @@ FS_BONUS_collected.clear()
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=5)
+    parser.add_argument('--sessions', type=int, default=1)
     parser.add_argument('--rounds', type=int, default=3)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
@@ -198,13 +198,11 @@ id_chat = 323826
 text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
-
 def send_message(text):
     url = F"https://bot.reddy.team/bot{token_bot}/send?chat={id_chat}&msg={text_bot}"
     response = requests.get(url)
     print(response)
     print('Сообщение отправлено')
-
 
 send_message(text_bot)
 

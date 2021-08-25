@@ -4,7 +4,7 @@ import time
 import unittest
 import pytest
 import requests
-from mm6.Locators import APIdata_MancalaQuest, ErrorCodes
+from Locators import APIdata_MancalaQuest, ErrorCodes
 
 A = APIdata_MancalaQuest
 E = ErrorCodes
