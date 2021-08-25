@@ -25,6 +25,32 @@ def write_data_to_json_file(f, target_data):
     file.write(json.dumps(target_data, indent=2))  # записываем файл
     file.close()  # закрываем файл
 
+
+class Reddy:
+    def __init__(self, toReddy=False, gameLine=''):
+        self.toReddy = toReddy
+        self.gameLine = gameLine
+        self.token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
+        self.id_bot = 72220000235
+
+        if self.gameLine == 'mm5':
+            self.reddy_id_chat = 324537
+        if self.gameLine == 'mm6':
+            self.reddy_id_chat = 323826
+        if self.gameLine == 'mm7':
+            self.reddy_id_chat = 324386
+        else:
+            pass
+
+        return
+
+    def send_message2reddy(self, text_bot):
+        if self.toReddy:
+            url = F"https://bot.reddy.team/bot{self.token_bot}/send?chat={self.reddy_id_chat}&msg={text_bot}"
+            response = requests.get(url)
+            print(f'Было отправлено сообщение в Reddy. HTTP: {response}')
+
+
 class ScatterCrystalActionType:
     Trade = '0'
     Replace = '1'

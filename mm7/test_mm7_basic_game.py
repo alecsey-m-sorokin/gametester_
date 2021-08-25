@@ -9,7 +9,7 @@ import pytest
 import requests
 from parameterized import parameterized
 from Locators import bets, APIdata_SpiritOtTheLake
-from SpiritOfTheLake_Page import API_SpiritOfTheLake, Logger
+from SpiritOfTheLake_Page import API_SpiritOfTheLake, Logger, Reddy
 
 A = APIdata_SpiritOtTheLake
 api = API_SpiritOfTheLake
@@ -206,6 +206,7 @@ def send_message(text):
     response = requests.get(url)
     print(response)
     print('Сообщение отправлено')
+
 
 send_message(text_bot)
 

@@ -9,7 +9,7 @@ import pytest
 import requests
 from parameterized import parameterized
 from locators import APIdata_PortalMaster, bets
-from mm5_PM_Page import API_PortalMaster
+from mm5_PM_Page import API_PortalMaster, Reddy
 
 A = APIdata_PortalMaster
 api = API_PortalMaster
@@ -122,7 +122,7 @@ print('the end')
 
 token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
 id_bot = 72220000235
-id_chat = 3244537
+id_chat = 324537
 text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
@@ -132,7 +132,9 @@ def send_message(text):
     print(response)
     print('Сообщение отправлено')
 
-send_message(text_bot)
+
+# send_message(text_bot)
+Reddy(toReddy=True, gameLine='mm5').send_message2reddy(text_bot)
 
 
 if __name__ == "__main__":

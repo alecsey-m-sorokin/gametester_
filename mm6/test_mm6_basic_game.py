@@ -9,7 +9,7 @@ import pytest
 import requests
 from parameterized import parameterized
 from Locators import bets, APIdata_MancalaQuest
-from MancalaQuest_Page import API_MancalaQuest, Logger
+from MancalaQuest_Page import API_MancalaQuest, Logger, Reddy
 
 A = APIdata_MancalaQuest
 api = API_MancalaQuest
@@ -204,7 +204,10 @@ def send_message(text):
     print(response)
     print('Сообщение отправлено')
 
-send_message(text_bot)
+# send_message(text_bot)
+
+
+Reddy(toReddy=True, gameLine='mm6').send_message2reddy(text_bot)
 
 
 if __name__ == "__main__":
