@@ -194,21 +194,10 @@ print2(f'start time = {dt_start_2}')
 print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
 print2('the end')
 
-
-token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
-id_bot = 72220000235
-id_chat = 324386
 text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
-def send_message(text):
-    url = F"https://bot.reddy.team/bot{token_bot}/send?chat={id_chat}&msg={text_bot}"
-    response = requests.get(url)
-    print(response)
-    print('Сообщение отправлено')
-
-
-send_message(text_bot)
+Reddy(toReddy=True, gameLine='mm7').send_message2reddy(text_bot)
 
 
 if __name__ == "__main__":
