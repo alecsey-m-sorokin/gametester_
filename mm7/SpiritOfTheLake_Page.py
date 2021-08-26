@@ -264,8 +264,7 @@ class API_SpiritOfTheLake:
         'tokenAsync' = jsonData.TokenAsync
          """
         HASH = hashlib.md5(('CreditDebit/' + RegToken + betSum + cntLineBet + A.gameKey).encode('utf-8')).hexdigest()
-        print(
-            '--- CreditDebit : ---------------------------------------------------------------------------------------')
+        print('--- CreditDebit : ------------------------------------------------------------------------------------')
         print('hash_CreditDebit = ', HASH)
         params_CreditDebit = {'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
                               'BetSum': betSum}
@@ -297,8 +296,7 @@ class API_SpiritOfTheLake:
         'oak_l' =
          """
         HASH = hashlib.md5(('GetAsyncResponse/' + RegToken + TokenAsync + A.gameKey).encode('utf-8')).hexdigest()
-        print(
-            '--- GetAsyncResponse : ----------------------------------------------------------------------------------')
+        print('--- GetAsyncResponse : -------------------------------------------------------------------------------')
         print('hash_GetAsyncResponse = ', HASH)
         params_GetAsyncResponse = {'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync}
         print('params = ', params_GetAsyncResponse)

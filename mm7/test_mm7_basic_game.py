@@ -45,7 +45,7 @@ def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=3)
+    parser.add_argument('--rounds', type=int, default=7)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
@@ -110,19 +110,6 @@ while r < sessions:  # set the number of rounds (sessions)
         print2(f'\nspin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {A.userID}')
         creditDebit, timeOut, tokenAsync = api.CreditDebit(regToken, A.betSum, A.cntLineBet)
         getAsyncResponse, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult = api.GetAsyncResponse(regToken, timeOut, tokenAsync)
-        # # print2(str(getAsyncResponse))
-        # # printAR(coin)
-        # if bonusGameResult:
-        #     fsLabel = 'BONUS GAME`s'
-        #     print2('! you WIN !')
-        #     print2(bonusGameResult)
-        #     # FS_BONUS_collected_count.append(bonusGameResult["FreeSpinCount"])
-        #     FS_BONUS_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок от BONUS game
-        #     FS_BONUS_collected.append(bonusGameResult)
-        # elif not bonusGameResult and totalFreeSpinsCount:
-        #     FS_WILD_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок от WILD символов
-        #     fsLabel = 'WILD`s'
-        #
         if totalFreeSpinsCount:
             """
             тут начинаются Фри спины, полученные в результате того, что дерево с цветами выросло
@@ -194,7 +181,7 @@ print2(f'start time = {dt_start_2}')
 print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
 print2('the end')
 
-text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
+text_bot = f'Тест закончен \n UserId = {A.userID} \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
 Reddy(toReddy=True, gameLine='mm7').send_message2reddy(text_bot)

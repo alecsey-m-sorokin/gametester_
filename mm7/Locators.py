@@ -26,12 +26,12 @@ class APIdata_SpiritOtTheLake:
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
     DOMAIN = 'https://test-games-api.carhenge.space'
 
-    gameURL = 'https://m-2579-mm7n-api.carhenge.space/'
-    frontURL = 'https://review-global-sot-4gu0c1.carhenge.space/'
-    partnerURL = 'https://m-2579-partners-api.carhenge.space/'
-    # gameURL = 'https://test-mm6n-api.carhenge.space/'
-    # frontURL = 'https://stest.zhdun.space/mm6n/'
-    # partnerURL = 'https://test-partners-api.carhenge.space/'
+    # gameURL = 'https://m-2579-mm7n-api.carhenge.space/'
+    # frontURL = 'https://review-global-sot-4gu0c1.carhenge.space/'
+    # partnerURL = 'https://m-2579-partners-api.carhenge.space/'
+    gameURL = 'https://test-mm7n-api.carhenge.space/'
+    frontURL = 'https://stest.zhdun.space/'
+    partnerURL = 'https://test-partners-api.carhenge.space/'
 
     AuthorizationGame_Url = 'auth/AuthorizationGame'
     ResumeGame_Url = 'games/ResumeGame'
