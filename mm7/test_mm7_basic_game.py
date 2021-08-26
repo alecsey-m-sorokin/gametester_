@@ -29,15 +29,15 @@ dt_start = time.time()
 dt_start_2 = datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")
 fsLabel = ''
 
-FS_WILD_collected_count = []
+FS_LAKE_collected_count = []
 FS_BONUS_collected_count = []
 FS_BONUS_collected = []
-FS_WILD_collected_winnings = []
+FS_LAKE_collected_winnings = []
 FS_BONUS_collected_winnings = []
 
-FS_WILD_collected_count.clear()
+FS_LAKE_collected_count.clear()
 FS_BONUS_collected_count.clear()
-FS_WILD_collected_winnings.clear()
+FS_LAKE_collected_winnings.clear()
 FS_BONUS_collected_winnings.clear()
 FS_BONUS_collected.clear()
 
@@ -96,10 +96,7 @@ while r < sessions:  # set the number of rounds (sessions)
 
             print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
             print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
-            if not bonusGameResult:
-                FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
-            else:
-                FS_BONUS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
+            FS_LAKE_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов
         else:
             pass
 
@@ -171,11 +168,8 @@ print2('\n')
 print2(f'finished "Spirit Of The Lake" after {r} rounds')
 print2(f'total bets = {sum(globalBets) * coin}')
 print2(f'total wins = {round(sum(globalWins), 2)}')
-print2(f'free spins collected by player in all ({r}) sessions: \n{FS_WILD_collected_count}')
-# print2('BONUS GAME free spins collected by player in all (%s) sessions: ' % r, FS_BONUS_collected_count)
-print2(f'{currency} win in each free spins round: \n{FS_WILD_collected_winnings}')
-# print2('%s win in each BONUS free spins round: ' % currency, FS_BONUS_collected_winnings)
-# print2('Bonus collected: ', FS_BONUS_collected)
+print2(f'free spins collected by player in all ({r}) sessions: \n{FS_LAKE_collected_count}')
+print2(f'{currency} win in each free spins round: \n{FS_LAKE_collected_winnings}')
 print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
 print2(f'start time = {dt_start_2}')
 print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
