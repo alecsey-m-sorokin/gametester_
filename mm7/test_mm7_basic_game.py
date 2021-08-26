@@ -179,7 +179,7 @@ print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
 print2('the end')
 
 text_bot_2 = f'finished "Spirit Of The Lake" after {sessions} sessions with {rounds} rounds\n UserId = {A.userID} \n total bets = {sum(globalBets) * coin} \n globalWins = {globalWins} \n ' \
-             f'total wins = {round(sum(globalWins), 2)} \n free spins collected by player in all ({sessions}) sessions: \n{FS_LAKE_collected_count} \n' \
+             f'total wins = {round(sum(globalWins), 2)} \n free spins collected by player in all ({sessions}) sessions: \n {FS_LAKE_collected_count} \n' \
              f'{currency} win in each free spins round: \n{FS_LAKE_collected_winnings} \n balance real before {balanceReal + (sum(globalBets) * coin) - round(sum(globalWins), 2)} \n ' \
              f'balance real after {balanceReal} \n Execution took: {timedelta(seconds=round(time.time() - dt_start))} \n start time = {dt_start_2} \n ' \
              f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")} \n the end'

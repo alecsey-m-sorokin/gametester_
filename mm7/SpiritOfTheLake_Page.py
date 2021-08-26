@@ -365,8 +365,7 @@ class API_SpiritOfTheLake:
             # print('\n')
             print("BetSum = %s, TotalWin = %s, BalanceBeforeSpin = %s, BalanceAfterSpin = %s" % (
                 betSum, totalWin, balance_before_spin, balance_after_spin))
-            print(
-                '---------------------------------------------------------------------------------------------------------')
+            print('---------------------------------------------------------------------------------------------------------')
             response_GetAsyncResponse.close()
 
         return response, resultId, spinId, totalFreeSpinsCount, remainingFreeSpinsCount, printAR, bonusGameResult
