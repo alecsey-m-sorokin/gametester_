@@ -80,11 +80,17 @@ class Reddy:
 
         return
 
-    def send_message2reddy(self, text_bot):
+    def send_message2reddy(self, *args):
+        aa = []
+        for v in args:
+            aa.append(str(v))
         if self.toReddy:
-            url = F"https://bot.reddy.team/bot{self.token_bot}/send?chat={self.reddy_id_chat}&msg={text_bot}"
-            response = requests.get(url)
-            print(f'Было отправлено сообщение в Reddy. HTTP: {response}')
+            for a in range(len(aa)):
+                url = F"https://bot.reddy.team/bot{self.token_bot}/send?chat={self.reddy_id_chat}&msg={aa[a]}"
+                response = requests.get(url)
+                print(f'Было отправлено сообщение в Reddy. HTTP: {response}')
+        else:
+            pass
 
 
 class Logger(object):

@@ -44,7 +44,7 @@ FS_BONUS_collected.clear()
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=1)
+    parser.add_argument('--sessions', type=int, default=3)
     parser.add_argument('--rounds', type=int, default=7)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
@@ -116,7 +116,7 @@ while r < sessions:  # set the number of rounds (sessions)
             print2(f'\n----- Spirit of the Lake {fsLabel} free spin # {str(totalFreeSpinsCount - remainingFreeSpinsCount)}')
             print2(str(getAsyncResponseFreeSpin))
             globalWinsFS.clear()
-            # FS_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок
+            FS_LAKE_collected_count.append(totalFreeSpinsCount)  # сюда помещаем значения totalFreeSpinsCount, которые получает Игрок
             globalWinsFS.append(getAsyncResponse["WinInfo"]["CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
             globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
             print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
@@ -132,10 +132,7 @@ while r < sessions:  # set the number of rounds (sessions)
 
             print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
             print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
-            if not bonusGameResult:
-                FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
-            else:
-                FS_BONUS_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов BONUS
+            FS_LAKE_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов
 
         else:
             pass
@@ -148,14 +145,12 @@ while r < sessions:  # set the number of rounds (sessions)
     r = r + 1
 
     print2('\n')
-    print2(f'finished "Spirit OfThe Lake" session after {i} spins')
+    print2(f'finished "Spirit Of The Lake" session after {i} spins')
     print2(f'totalWins = {totalWins}')
     print2(f'sum totalWins = {sum(totalWins)}')
     print2(f'totalBets = {totalBets}')
     print2(f'sum totalBets = {sum(totalBets)}')
     globalBets.append(sum(totalBets))
-    totalWins.clear()
-    totalBets.clear()
     authorizationGame, balance, balanceReal, coin, currency, remainingFreeSpinsCount, func = api.AuthorizationGame(regToken)
     globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) * coin * i), 2))
     print2(f'globalWins = {globalWins}')
@@ -163,6 +158,14 @@ while r < sessions:  # set the number of rounds (sessions)
     print2(f'Balance = {balance}')
     print2(f'Balance Real = {balanceReal}')
     i = 0
+
+    text_bot_1 = f'finished "Spirit Of The Lake" session after {rounds} spins \n UserId = {A.userID} \n totalWins = {totalWins} \n sum totalWins = {sum(totalWins)} \n ' \
+                 f'totalBets = {totalBets} \n sum totalBets = {sum(totalBets)} \n globalWins = {globalWins} \n ' \
+                 f'sum globalWins = {round(sum(globalWins), 2)} \n Balance = {balance} \n Balance Real = {balanceReal}'
+
+    totalWins.clear()
+    totalBets.clear()
+
 
 print2('\n')
 print2(f'finished "Spirit Of The Lake" after {r} rounds')
@@ -175,10 +178,17 @@ print2(f'start time = {dt_start_2}')
 print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
 print2('the end')
 
+text_bot_2 = f'finished "Spirit Of The Lake" after {sessions} sessions with {rounds} rounds\n UserId = {A.userID} \n total bets = {sum(globalBets) * coin} \n globalWins = {globalWins} \n ' \
+             f'total wins = {round(sum(globalWins), 2)} \n free spins collected by player in all ({sessions}) sessions: \n{FS_LAKE_collected_count} \n' \
+             f'{currency} win in each free spins round: \n{FS_LAKE_collected_winnings} \n balance real before {balanceReal + (sum(globalBets) * coin) - round(sum(globalWins), 2)} \n ' \
+             f'balance real after {balanceReal} \n Execution took: {timedelta(seconds=round(time.time() - dt_start))} \n start time = {dt_start_2} \n ' \
+             f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")} \n the end'
+
 text_bot = f'Тест закончен \n UserId = {A.userID} \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
-Reddy(toReddy=True, gameLine='mm7').send_message2reddy(text_bot)
+
+Reddy(toReddy=True, gameLine='mm7').send_message2reddy(text_bot_2)
 
 
 if __name__ == "__main__":
