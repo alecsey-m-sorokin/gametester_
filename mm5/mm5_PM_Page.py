@@ -6,7 +6,7 @@ import unittest
 import pytest
 import requests
 
-from locators import APIdata_PortalMaster
+from Locators import APIdata_PortalMaster
 
 A = APIdata_PortalMaster
 
@@ -143,7 +143,7 @@ class API_PortalMaster:
                               'BetSum': betSum}
         response_CreditDebit = requests.post(A.DOMAIN + '/games/CreditDebit',
                                              params={'Hash': HASH, 'Token': RegToken, 'CntLineBet': cntLineBet,
-                                                     'BetSum': betSum}, json=params_CreditDebit, timeout=1, headers={'Connection': 'close'})
+                                                     'BetSum': betSum}, json=params_CreditDebit, headers={'Connection': 'close'})
         response = response_CreditDebit.json()
         assert response_CreditDebit.status_code == 200
         tokenAsync = response["TokenAsync"]
@@ -169,15 +169,15 @@ class API_PortalMaster:
         params_GetAsyncResponse = {'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync}
         response_GetAsyncResponse = requests.post(A.DOMAIN + '/games/GetAsyncResponse',
                                                   params={'Hash': HASH, 'Token': RegToken, 'TokenAsync': TokenAsync},
-                                                  json=params_GetAsyncResponse, timeout=1, headers={'Connection': 'close'})
+                                                  json=params_GetAsyncResponse, headers={'Connection': 'close'})
         response = response_GetAsyncResponse.json()
         # print('GetAsyncResponse = ', response)
         assert response_GetAsyncResponse.status_code == 200
         while "Error" in response:
-            # time.sleep(1)
+            time.sleep(500 / 1000)
             response_GetAsyncResponse = requests.post(A.DOMAIN + '/games/GetAsyncResponse',
                                                       params={'Hash': HASH, 'Token': RegToken,
-                                                              'TokenAsync': TokenAsync}, json=params_GetAsyncResponse, timeout=1, headers={'Connection': 'close'})
+                                                              'TokenAsync': TokenAsync}, json=params_GetAsyncResponse, headers={'Connection': 'close'})
             response = response_GetAsyncResponse.json()
         else:
             resultId = response['ResultId']
@@ -237,7 +237,7 @@ class API_PortalMaster:
                                                                  "ScatterPosition": {"Row": ScatterPositionRow,
                                                                                      "Column": ScatterPositionColumn},
                                                                  "LevelSphere": LevelSphere, "Info": Info},
-                                                         json=params_ScatterCrystalBonusGame, timeout=1, headers={'Connection': 'close'})
+                                                         json=params_ScatterCrystalBonusGame, headers={'Connection': 'close'})
         response = response_ScatterCrystalBonusGame.json()
         assert response_ScatterCrystalBonusGame.status_code == 200
         url = response_ScatterCrystalBonusGame.url
@@ -256,17 +256,18 @@ class API_PortalMaster:
         response_GetAsyncResponse_Scatter = requests.post(A.DOMAIN + '/games/GetAsyncResponse',
                                                           params={'Hash': HASH, 'Token': RegToken,
                                                                   'TokenAsync': TokenAsyncScatter},
-                                                          json=params_GetAsyncResponse_Scatter, timeout=1, headers={'Connection': 'close'})
+                                                          json=params_GetAsyncResponse_Scatter, headers={'Connection': 'close'})
         response = response_GetAsyncResponse_Scatter.json()
         print('GetAsyncResponse_Scatter = ', response)
         assert response_GetAsyncResponse_Scatter.status_code == 200
         while "Error" in response:
             # print('time waiting ...')
             # time.sleep(1)
+            time.sleep(500 / 1000)
             response_GetAsyncResponse_Scatter = requests.post(A.DOMAIN + '/games/GetAsyncResponse',
                                                               params={'Hash': HASH, 'Token': RegToken,
                                                                       'TokenAsync': TokenAsyncScatter},
-                                                              json=params_GetAsyncResponse_Scatter, timeout=1, headers={'Connection': 'close'})
+                                                              json=params_GetAsyncResponse_Scatter, headers={'Connection': 'close'})
             response = response_GetAsyncResponse_Scatter.json()
         else:
             print("Response =", response)
@@ -290,7 +291,7 @@ class API_PortalMaster:
         print('params freeSpin= ', params_FreeSpin)
         response_FreeSpin = requests.post(A.DOMAIN + '/games/FreeSpin',
                                           params={"Hash": HASH, "Token": RegToken, "ResultId": ResultId,
-                                                  "SpinId": SpinId}, json=params_FreeSpin, timeout=1, headers={'Connection': 'close'})
+                                                  "SpinId": SpinId}, json=params_FreeSpin, headers={'Connection': 'close'})
         response = response_FreeSpin.json()
         assert response_FreeSpin.status_code == 200
         url = response_FreeSpin.url
@@ -309,15 +310,16 @@ class API_PortalMaster:
         response_GetAsyncResponse_FreeSpin = requests.post(A.DOMAIN + '/games/GetAsyncResponse',
                                                            params={'Hash': HASH, 'Token': RegToken,
                                                                    'TokenAsync': TokenAsyncFreeSpin},
-                                                           json=params_GetAsyncResponse_FreeSpin, timeout=1, headers={'Connection': 'close'})
+                                                           json=params_GetAsyncResponse_FreeSpin, headers={'Connection': 'close'})
         response = response_GetAsyncResponse_FreeSpin.json()
         print('GetAsyncResponse_FreeSpin = ', response)
         assert response_GetAsyncResponse_FreeSpin.status_code == 200
         while "Error" in response:
+            time.sleep(500 / 1000)
             response_GetAsyncResponse_FreeSpin = requests.post(A.DOMAIN + '/games/GetAsyncResponse',
                                                                params={'Hash': HASH, 'Token': RegToken,
                                                                        'TokenAsync': TokenAsyncFreeSpin},
-                                                               json=params_GetAsyncResponse_FreeSpin, timeout=1, headers={'Connection': 'close'})
+                                                               json=params_GetAsyncResponse_FreeSpin, headers={'Connection': 'close'})
             response = response_GetAsyncResponse_FreeSpin.json()
         else:
             spinIdFs = response['SpinResult']['Id']

@@ -8,7 +8,7 @@ from random import randint
 
 import pytest
 from parameterized import parameterized
-from locators import APIdata_PortalMaster, bets
+from Locators import APIdata_PortalMaster, bets
 from mm5_PM_Page import API_PortalMaster
 
 A = APIdata_PortalMaster

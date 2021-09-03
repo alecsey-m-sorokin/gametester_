@@ -1,72 +1,62 @@
-import argparse
-import datetime
-import sys
+import concurrent.futures
+import threading
+import logging
 from datetime import timedelta
 import time
 import unittest
-from random import randint
-# from parameterized import parameterized
+
 from Locators import APIdata_PortalMaster, bets
 from mm5_PM_Page import API_PortalMaster, ScatterCrystalActionType, LevelSphere
 
 A = APIdata_PortalMaster
 api = API_PortalMaster
 
+a = range(500, 530)
+aa = []
 
-# @parameterized.expand([('1', '25'), ('2', '25'), ('3', '25'), ('4', '25'), ('5', '25')])
-
-def goto(linenum):
-    global line
-    line = linenum
-
-
-r = 0
-i = 0
-currency = ''
-freeSpinCount = 0
-freeSpinsCount = 0
-totalBets = []
-totalWins = []
-globalBets = []
-globalWins = []
-FS_collected_count = []
-FS_collected_real_count = []
-FS_collected_winnings = []
-globalWinsFS = []
-dt_start = time.time()
-
-FS_collected_count.clear()
-FS_collected_real_count.clear()
-FS_collected_winnings.clear()
+for num in range(len(a)):
+    aa.append(a[num])
 
 
-def gameParser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=10)
-    return parser
+def thread_function(ids):
+    print('\n')
+    print('userId # %s' % ids)
+    regToken = api.tps(ids)
+    logging.info("Thread %s: starting", ids)
+    time.sleep(2)
+    logging.info("Thread %s: finishing", ids)
 
+def fs(ids):
+    r = 0
+    spin = 0
+    currency = ''
+    freeSpinCount = 0
+    freeSpinsCount = 0
+    totalBets = []
+    totalWins = []
+    globalBets = []
+    globalWins = []
+    FS_collected_count = []
+    FS_collected_real_count = []
+    FS_collected_winnings = []
+    globalWinsFS = []
+    dt_start = time.time()
 
-gameParams = gameParser()
-namespace = gameParams.parse_args(sys.argv[1:])
-strategy = namespace.strategy
-sessions = namespace.sessions
-rounds = namespace.rounds
+    FS_collected_count.clear()
+    FS_collected_real_count.clear()
+    FS_collected_winnings.clear()
 
-print('\nusing', sys.argv[0])
-
-while r < sessions:  # выставляем количество раундов (сессий)
     print('\n')
     print('session # %s' % str(r + 1))
-    regToken = api.testpartnerservice()
+    # regToken = api.testpartnerservice()
+    regToken = api.tps(ids)
     authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
     balanceRealBefore = balanceReal
     func(balance, balanceReal, coin, currency)
 
-    while i < rounds:  # выставляем количество спинов (вращений)
+    while spin < 50:  # выставляем количество спинов (вращений)
         print('\n')
-        print('spin # %s' % str(i + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % A.userID)
+        print('spin # %s' % str(spin + 1), ' / session # %s' % str(r + 1), ' / userId # %s' % ids)
         creditDebit, tokenAsync = api.CreditDebit(regToken, A.betSum,
                                                   A.cntLineBet)  # ставка ! CreditDebit # resultId = tokenAsync
         getAsyncResponse, resultId, spinId, scatterCrystalGame, spheres, spheresSpinId, scattersForReplace, printAR = api.GetAsyncResponse(
@@ -123,7 +113,8 @@ while r < sessions:  # выставляем количество раундов 
             status = getAsyncResponseFreeSpin["WinInfo"]["FreeSpin"]
             globalWinsFS.clear()
             FS_collected_count.append(freeSpinCount)  # сюда помещаем значения freeSpinCount, которые получает Игрок
-            FS_collected_real_count.append(fS)  # сюда помещаем значения freeSpinsCount, реальное значение фри спинов
+            FS_collected_real_count.append(
+                fS)  # сюда помещаем значения freeSpinsCount, реальное значение фри спинов
             globalWinsFS.append(getAsyncResponse["WinInfo"][
                                     "CurrentSpinWin"])  # тут добавляем выигрыш с основного раунда перед фри спинами
             globalWinsFS.append(getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
@@ -142,14 +133,12 @@ while r < sessions:  # выставляем количество раундов 
                 sum(globalWinsFS) / 100)  # тут сохраняем сколько игрок выиграл в CURRENCY за freeSpinCount фри спинов
             freeSpinCount = 0
 
-        i = i + 1
+        spin = spin + 1
         totalBets.append(getAsyncResponse["BetSum"])
         totalWins.append(getAsyncResponse["WinInfo"]["TotalWin"])
         printAR(coin)
 
-    r = r + 1
-
-    print('finished Portal Master session after %s spins' % i)
+    print('finished Portal Master session after %s spins' % spin)
     print(totalWins)
     print(sum(totalWins))
     print(totalBets)
@@ -158,23 +147,38 @@ while r < sessions:  # выставляем количество раундов 
     totalWins.clear()
     totalBets.clear()
     authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
-    globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) / 100 * i), 2))
+    globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) * coin * spin), 2))
     print('global wins = ', globalWins)
     print("Balance =", balance)
     print("Balance Real =", balanceReal)
     print('userId =', A.userID)
-    i = 0
+    spin = 0
 
-print('\n')
-print('finished Portal Master after %s sessions' % r)
-print('total bets = ', sum(globalBets) / 100)
-print('total wins = ', round(sum(globalWins), 2))
-print('global wins = ', globalWins)
-print('free spins collected by player in all (%s) sessions: ' % r, FS_collected_count)
-print('real free spins collected by player in all (%s) sessions: ' % r, FS_collected_real_count)
-print('%s win in each free spins round: ' % currency, FS_collected_winnings)
-print('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
-print('the end')
+    print('\n')
+    print('finished Portal Master after %s sessions' % r)
+    print('total bets = ', sum(globalBets) * coin)
+    print('total wins = ', round(sum(globalWins), 2))
+    print('global wins = ', globalWins)
+    print('free spins collected by player in all (%s) sessions: ' % r, FS_collected_count)
+    print('real free spins collected by player in all (%s) sessions: ' % r, FS_collected_real_count)
+    print('%s win in each free spins round: ' % currency, FS_collected_winnings)
+    print('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
+    print('the end')
+
+
+# for i in range(len(a)):
+#     a[i] = threading.Thread(target=fs, args=(a[i],))
+#     a[i].start()
+
 
 if __name__ == "__main__":
-    unittest.main()
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO,
+                        datefmt="%H:%M:%S")
+
+    for i in range(len(a)):
+        aa[i] = threading.Thread(target=fs, args=(aa[i],))
+        aa[i].start()
+
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    #     executor.map(fs, range(4))

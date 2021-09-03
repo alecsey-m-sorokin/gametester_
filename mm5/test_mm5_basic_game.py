@@ -8,7 +8,7 @@ from random import randint
 import pytest
 import requests
 from parameterized import parameterized
-from locators import APIdata_PortalMaster, bets
+from Locators import APIdata_PortalMaster, bets
 from mm5_PM_Page import API_PortalMaster, Reddy
 
 A = APIdata_PortalMaster
@@ -37,7 +37,7 @@ def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
-    parser.add_argument('--rounds', type=int, default=7)
+    parser.add_argument('--rounds', type=int, default=2)
     return parser
 
 
@@ -107,7 +107,7 @@ while r < sessions:  # выставляем количество раундов 
     totalWins.clear()
     totalBets.clear()
     authorizationGame, balance, balanceReal, coin, currency, func = api.AuthorizationGame(regToken)
-    globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) / 125 * i), 2))
+    globalWins.append(round(balanceReal - (balanceRealBefore - int(A.cntLineBet) * coin * i), 2))
     print(globalWins)
     print("Balance =", balance)
     print("Balance Real =", balanceReal)
@@ -115,7 +115,7 @@ while r < sessions:  # выставляем количество раундов 
 
 print('\n')
 print('finished Portal Master after %s rounds' % r)
-print('total bets = ', sum(globalBets) / 125)
+print('total bets = ', sum(globalBets) * coin)
 print('total wins = ', round(sum(globalWins), 2))
 print('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
 print('the end')
