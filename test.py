@@ -1,18 +1,22 @@
+import base64
+
+from Crypto.Cipher import AES  # pip3 install pycryptodome
+
 b = True
 
 while b:
     print('while')
-    b= False
+    b = False
 else:
     print('else')
 
-A0 = dict(zip(('a','b','c','d','e'),(1,2,3,4,5)))
+A0 = dict(zip(('a', 'b', 'c', 'd', 'e'), (1, 2, 3, 4, 5)))
 A1 = range(10)
 A2 = sorted([i for i in A1 if i in A0])
 A3 = sorted([A0[s] for s in A0])
 A4 = [i for i in A1 if i in A3]
-A5 = {i:i*i for i in A1}
-A6 = [[i,i*i] for i in A1]
+A5 = {i: i * i for i in A1}
+A6 = [[i, i * i] for i in A1]
 
 print(A0)
 print(A1)
@@ -21,6 +25,18 @@ print(A3)
 print(A4)
 print(A5)
 print(A6)
+
+BS = 16
+key = '29F8A13E0F12076292E17EC6F83776DA'
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+
+
+def decrypt(self, enc):
+    enc = base64.urlsafe_b64decode(enc.encode('utf-8'))
+    iv = enc[:BS]
+    cipher = AES.new(self.key, AES.MODE_CBC, iv)
+    return unpad(cipher.decrypt(enc[BS:]))
 
 
 class Logger(object):

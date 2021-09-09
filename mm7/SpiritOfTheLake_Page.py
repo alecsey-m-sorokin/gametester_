@@ -171,6 +171,7 @@ class API_SpiritOfTheLake:
         response = requests.get(A.DOMAIN_tps, params=params, headers={'Connection': 'close'})
         # print(response)
         print('params = ', params)
+        # print(response.status_code)
         assert response.status_code == 200
         regToken = response.text.split("token=")[1].split("&")[0]
         print('game_%s_IframeUrl = ' % A.gameID, response.text)
@@ -183,6 +184,7 @@ class API_SpiritOfTheLake:
                   'gameID': A.gameID, 'userID': A.userID, 'currency': A.currency}
         response = requests.get(A.DOMAIN_tps, params=params, headers={'Connection': 'close'})
         print('params = ', params)
+        print('response status code =', response.status_code)
         assert response.status_code == 200
         print('response status code =', response.status_code)
         print('url = ', response.url)

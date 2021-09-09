@@ -192,19 +192,8 @@ print2('Bonus collected: ', FS_BONUS_collected)
 print2('Execution took: %s' % timedelta(seconds=round(time.time() - dt_start)))
 print2('the end')
 
-token_bot = 'BGCcKgM79OMwRAJe-hWkZwpsRaIJ0-xx'
-id_bot = 72220000235
-id_chat = 323826
 text_bot = f'Тест закончен \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
-
-def send_message(text):
-    url = F"https://bot.reddy.team/bot{token_bot}/send?chat={id_chat}&msg={text_bot}"
-    response = requests.get(url)
-    print(response)
-    print('Сообщение отправлено')
-
-# send_message(text_bot)
 
 
 Reddy(toReddy=True, gameLine='mm6').send_message2reddy(text_bot)
