@@ -11,7 +11,7 @@ from mm5_PM_Page import API_PortalMaster, ScatterCrystalActionType, LevelSphere
 A = APIdata_PortalMaster
 api = API_PortalMaster
 
-a = range(1500, 1800)
+a = range(1500, 1700)
 aa = []
 
 for num in range(len(a)):

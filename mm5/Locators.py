@@ -54,17 +54,17 @@ bets = [
 
 class APIdata_PortalMaster:
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
-    # DOMAIN = 'https://test-games-api.carhenge.space'
+    DOMAIN = 'https://test-games-api.carhenge.space'
 
     # DOMAIN = 'https://m-1-games-api.carhenge.space/'
     # DOMAIN = 'https://m-0-games-api.carhenge.space/'
-    DOMAIN = 'https://m-2932-games-api.carhenge.space/'
+    # DOMAIN = 'https://m-2932-games-api.carhenge.space/'
 
     # gameURL = 'https://m-1-games-api.carhenge.space/'
     # gameURL = 'https://m-0-games-api.carhenge.space/'
-    gameURL = 'https://m-2932-games-api.carhenge.space/'
+    # gameURL = 'https://m-2932-games-api.carhenge.space/'
 
-    # gameURL = 'https://test-games-api.carhenge.space/'
+    gameURL = 'https://test-games-api.carhenge.space/'
     frontURL = 'https://stest.zhdun.space/'
     partnerURL = 'https://test-partners-api.carhenge.space/'
 
