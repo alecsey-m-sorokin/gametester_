@@ -19,10 +19,10 @@ api = API_SpiritOfTheLake
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=3)
-    parser.add_argument('--rounds', type=int, default=8)
+    parser.add_argument('--sessions', type=int, default=50)
+    parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
-    parser.add_argument('--users', type=int, default=3)
+    parser.add_argument('--users', type=int, default=30)
     return parser
 
 
@@ -211,11 +211,6 @@ def fs(ids):
     print2(f'end time = {datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S")}')
     print2('the end')
     # logging.info(f'Thread {ids}: finishing')
-
-    text_bot = f'Тест закончен \n UserId = {ids} \n Количество сессий = {sessions} \n Количество спинов = {rounds} \n' \
-               f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
-
-    Reddy(toReddy=True, gameLine='mm7').send_message2reddy(text_bot)
 
 
 if __name__ == "__main__":
