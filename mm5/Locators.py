@@ -22,36 +22,6 @@ bets = [
 ]
 
 
-# class DOM:
-#     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
-#     DOMAIN = 'https://test-games-api.carhenge.space'
-#
-#     gameURL = 'https://test-games-api.carhenge.space/'
-#     frontURL = 'https://stest.zhdun.space/'
-#     partnerURL = 'https://test-partners-api.carhenge.space/'
-#
-#     AuthorizationGame_Url = '/auth/AuthorizationGame'
-#     GetSlotInfo_Url = '/games/GetSlotInfo'
-#     CreditDebit_Url = '/games/CreditDebit'
-#     GetAsyncResponse_Url = '/games/GetAsyncResponse'
-#     FreeSpin_Url = '/games/FreeSpin'
-#
-
-# class APIdata:
-#     partnerID = '360'
-#     gameID = '9006'
-#     # userID = '422021'
-#     userID = '55555'
-#     currency = 'EUR'
-#     gameKey = 'TestKey'
-#     betSum = '1'
-#     cntLineBet = '15'
-#     # TokenAsync = ''
-#     TokenAsync_2 = ''
-#     CardIndex = '2'
-#     mobile_platform = '&MobilePlatform=false'
-#     # query = 'gameURL=' + gameURL + '&frontURL=' + frontURL + '&partnerURL=' + partnerURL + '&partnerId' + partnerID + '&gameID' + gameID + '&userID' + userID + '&currency' + currency
-
 class APIdata_PortalMaster:
     DOMAIN_tps = 'https://testpartnerservice.carhenge.space/setup/'
     DOMAIN = 'https://test-games-api.carhenge.space'
@@ -84,7 +54,6 @@ class APIdata_PortalMaster:
     partnerID_rtp_120 = '480'
 
     start_users_rtp_90 = 20500  # 90%
-    # start_users_rtp_95 = 10500  # 95%
     start_users_rtp_95 = 20300  # 95%
     start_users_rtp_120 = 20900  # 120%
 
@@ -101,9 +70,9 @@ class APIdata_PortalMaster:
     CardIndex = '2'
     mobile_platform = '&MobilePlatform=false'
 
-    # fileName_fs = 'mm5/' + ''
-    # fileName_basic = 'mm5/' + 'test_mm5_basic_game.py'
-    # fileName_rtp = 'mm5/' + 'test_mm5_rtp.py'
-
+    fileName_fs = 'mm5/' + 'test_mm5_free_spins.py'
+    fileName_basic = 'mm5/' + 'test_mm5_basic_game.py'
+    fileName_replace = 'mm5/' + 'test_mm5_replace_scatter.py'
+    fileName_rtp = 'mm5/' + 'test_mm5_rtp.py'
 
 # y1 = [method(x, point, data) for x in x1]

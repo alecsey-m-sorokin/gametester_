@@ -44,8 +44,8 @@ FS_BONUS_collected.clear()
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=3)
-    parser.add_argument('--rounds', type=int, default=7)
+    parser.add_argument('--sessions', type=int, default=1)
+    parser.add_argument('--rounds', type=int, default=3)
     # parser.add_argument('--userid', type=int, default=A.userID)
     return parser
 
@@ -131,8 +131,8 @@ while r < sessions:  # set the number of rounds (sessions)
                 print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                 print2('globalWinsFS = ', globalWinsFS)
 
-            print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
-            print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
+            print2(f'Player got {sum(globalWinsFS)} Coins in {totalFreeSpinsCount} freeSpins')
+            print2(f'Player got {sum(globalWinsFS) * coin} {currency} in {totalFreeSpinsCount} freeSpins')
             FS_LAKE_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов
 
         else:

@@ -2,13 +2,13 @@ import hashlib
 import json
 import time
 import unittest
-
 import pytest
 import requests
-
-from Locators import APIdata_PortalMaster
+from Locators import APIdata_PortalMaster, ErrorCodes
 
 A = APIdata_PortalMaster
+E = ErrorCodes
+
 
 def write_data_to_json_file(f, target_data):
     """
@@ -24,6 +24,42 @@ def write_data_to_json_file(f, target_data):
     file = open(f + ' {}.json'.format(dt), 'a')  # открываем куда писать полученные данные
     file.write(json.dumps(target_data, indent=2))  # записываем файл
     file.close()  # закрываем файл
+
+
+def print2file(f, target_data):
+    import datetime
+    # dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
+    dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y"))
+    file = open(f + ' {}.json'.format(dt), 'a')  # открываем куда писать полученные данные
+    file.write(target_data)  # записываем файл
+    file.write('\n')
+    file.close()  # закрываем файл
+
+
+def findall(v, k):
+    """
+    : рекурсивный поиск - найти конкретное значение JSON по ключу
+    :param v: где ищем
+    :param k: что ищем
+    :return: results = findall(data, "WinStateInfo")
+    with open('c:/testing/response2.json') as json_file:
+        data = json.load(json_file)
+        data_str = json.dumps(data)
+    """
+    if type(v) == type({}):
+        for k1 in v:
+            if k1 == k:
+                print(v[k1])
+                return v[k1]
+            result = findall(v[k1], k)
+            if result is not None:
+                return result
+
+    if type(v) == type([]):
+        for k1 in v:
+            result = findall(k1, k)
+            if result is not None:
+                return result
 
 
 class Reddy:
@@ -49,6 +85,70 @@ class Reddy:
             url = F"https://bot.reddy.team/bot{self.token_bot}/send?chat={self.reddy_id_chat}&msg={text_bot}"
             response = requests.get(url)
             print(f'Было отправлено сообщение в Reddy. HTTP: {response}')
+
+
+class Logger(object):
+
+    def __init__(self, fileName='', toFile=False, toConsole=False):
+        self.fileName = fileName
+        self.toFile = toFile
+        self.toConsole = toConsole
+        return
+
+    def printml(self, *args):
+        aa = []
+        toprint = ''
+        for v in args:
+            aa.append(str(v))
+            toprint = toprint + str(v) + ' '
+        if self.toFile and self.toConsole:
+            f = open(self.fileName, 'a')
+            for a in range(len(aa)):
+                f.write(aa[a])
+                f.write('\n')
+                print(aa[a])
+                # print('\n')
+            f.close()
+        elif self.toFile:
+            f = open(self.fileName, 'a')
+            for a in range(len(aa)):
+                f.write(aa[a])
+                f.write('\n')
+            f.close()
+        elif self.toConsole:
+            for a in range(len(aa)):
+                print(aa[a])
+        else:
+            pass
+        return
+
+
+class RTP:
+
+    def __init__(self, userCount=0, currentRTP=0):
+        self.userCount = userCount
+        self.currentRTP = currentRTP
+
+        if self.currentRTP == 90:
+            self.start_users_rtp = A.start_users_rtp_90
+        if self.currentRTP == 95:
+            self.start_users_rtp = A.start_users_rtp_95
+        if self.currentRTP == 120:
+            self.start_users_rtp = A.start_users_rtp_120
+        else:
+            self.start_users_rtp = A.start_users_rtp_95
+
+        return
+
+    def setRTP(self):
+        rtp_user_count = self.userCount
+        rtp_user_range = range(self.start_users_rtp, self.start_users_rtp + rtp_user_count)
+        rtp_user_list = []
+
+        for xxx in range(len(rtp_user_range)):
+            rtp_user_list.append(rtp_user_range[xxx])
+
+        return rtp_user_count, rtp_user_range, rtp_user_list
 
 
 class ScatterCrystalActionType:

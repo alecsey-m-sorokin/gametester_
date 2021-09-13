@@ -21,7 +21,7 @@ def gameParser():
     parser.add_argument('--strategy', default=['basic'])
     parser.add_argument('--sessions', type=int, default=1)
     parser.add_argument('--rounds', type=int, default=3)
-    parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_120)
+    parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
     parser.add_argument('--users', type=int, default=1)
     return parser
 
@@ -44,7 +44,7 @@ elif namespace.rtp == 97:
 elif namespace.rtp == 120:
     rtp = A.partnerID_rtp_120
 else:
-    rtp = A.partnerID_rtp_120
+    rtp = A.partnerID_rtp_95
 
 
 # def thread_function(ids):
@@ -72,6 +72,7 @@ def fs2(ids):
 def fs(ids):
     r = 0
     i = 0
+    currency = ''
     freeSpinCount = 0
     freeSpinsCount = 0
     totalBets = []
@@ -133,8 +134,8 @@ def fs(ids):
                     print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                     print2('globalWinsFS = ', globalWinsFS)
 
-                print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
-                print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
+                print2(f'Player got {sum(globalWinsFS)} Coins in {totalFreeSpinsCount} freeSpins')
+                print2(f'Player got {sum(globalWinsFS) * coin} {currency} in {totalFreeSpinsCount} freeSpins')
                 if not bonusGameResult:
                     FS_WILD_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов WILD
                 else:

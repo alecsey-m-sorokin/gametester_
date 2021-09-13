@@ -19,7 +19,7 @@ api = API_SpiritOfTheLake
 def gameParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strategy', default=['basic'])
-    parser.add_argument('--sessions', type=int, default=50)
+    parser.add_argument('--sessions', type=int, default=100)
     parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
     parser.add_argument('--users', type=int, default=30)
@@ -62,9 +62,9 @@ def fs2(ids):
         try:
             return fs(ids)
         except Exception as e:
+            error_message = f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ================== {e}'
             print(f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
-            # print('=================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
-            # time.sleep(1)
+            Reddy(toReddy=True, gameLine='mm7').send_message2reddy(error_message)
 
 # global fileName
 
@@ -133,8 +133,8 @@ def fs(ids):
                     print2('Current freeSpin win = ', getAsyncResponseFreeSpin["WinInfo"]["CurrentSpinWin"])
                     print2('globalWinsFS = ', globalWinsFS)
 
-                print2('Player got %s Coins in %s freeSpins' % (sum(globalWinsFS), totalFreeSpinsCount))
-                print2('Player got %s %s in %s freeSpins' % (sum(globalWinsFS) * coin, currency, totalFreeSpinsCount))
+                print2(f'Player got {sum(globalWinsFS)} Coins in {totalFreeSpinsCount} freeSpins')
+                print2(f'Player got {sum(globalWinsFS) * coin} {currency} in {totalFreeSpinsCount} freeSpins')
                 FS_LAKE_collected_winnings.append(sum(globalWinsFS) * coin)  # тут сохраняем сколько игрок выиграл в CURRENCY за totalFreeSpinsCount фри спинов
             else:
                 pass
@@ -224,6 +224,7 @@ if __name__ == "__main__":
     for i in range(len(currentRTP[1])):
         currentRTP[2][i] = threading.Thread(target=fs2, args=(currentRTP[2][i],))
         currentRTP[2][i].start()
+        time.sleep(1)
 
     # with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
     #     executor.map(thread_function, range(10))
