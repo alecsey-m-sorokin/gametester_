@@ -6,12 +6,14 @@ import os
 from mm5.Locators import APIdata_PortalMaster
 from mm6.Locators import APIdata_MancalaQuest
 from mm7.Locators import APIdata_SpiritOtTheLake
+from mm8.Locators import APIdata_TwinWins
 from xspin.Locators import APIdata_xspin
 
 
 A_mm5 = APIdata_PortalMaster
 A_mm6 = APIdata_MancalaQuest
 A_mm7 = APIdata_SpiritOtTheLake
+A_mm8 = APIdata_TwinWins
 A_xspin = APIdata_xspin
 
 r = 0
@@ -42,6 +44,13 @@ def gameParser():
     mm7.add_argument('--rtp', type=int, default=A_mm7.partnerID)
     mm7.add_argument('--users', type=int, default=3)
     # mm6.add_argument('--userid', type=int, default=A.userID)
+
+    mm8 = subparsers.add_parser('mm8')
+    mm8.add_argument('--strategy', default='basic')
+    mm8.add_argument('--sessions', type=int, default=1)
+    mm8.add_argument('--rounds', type=int, default=10)
+    mm8.add_argument('--rtp', type=int, default=A_mm8.partnerID)
+    mm8.add_argument('--users', type=int, default=3)
 
     xspin = subparsers.add_parser('xspin')
     xspin.add_argument('--strategy', default='basic')
@@ -119,6 +128,28 @@ elif namespace.command == "mm7":
 
     elif namespace.strategy == 'rtp':
         os.system(f'python {A_mm7.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds} --rtp {namespace.rtp} --users {namespace.users}')
+
+    else:
+        print("Что-то пошло не так...")
+
+elif namespace.command == "mm8":
+    print('using', sys.argv[0])
+    print(namespace)
+    print(f'command = {namespace.command}')
+    print(f'strategy = {namespace.strategy}')
+    print(f'sessions = {namespace.sessions}')
+    print(f'rounds = {namespace.rounds}')
+    print(f'rtp (partnerId) = {namespace.rtp}')
+    print(f'users = {namespace.users}')
+
+    if namespace.strategy == 'fs':
+        os.system(f'python {A_mm8.fileName_fs} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'basic':
+        os.system(f'python {A_mm8.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'rtp':
+        os.system(f'python {A_mm8.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds} --rtp {namespace.rtp} --users {namespace.users}')
 
     else:
         print("Что-то пошло не так...")
