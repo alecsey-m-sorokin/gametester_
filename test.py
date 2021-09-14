@@ -1,4 +1,6 @@
 import base64
+import time
+from datetime import datetime
 
 from Crypto.Cipher import AES  # pip3 install pycryptodome
 
@@ -79,3 +81,9 @@ fileName = ''
 log = Logger(fileName, toFile=False, toConsole=True)
 print2 = log.printml
 print2('Logger testing ... 1', 'Logger testing ... 2 ', 'Logger testing ... 666')
+
+# dt = datetime.today().strftime("%d-%m-%Y %H-%M-%S")
+dt = datetime.now().strftime("%d-%m-%Y %H-%M-%S")
+dt_start = time.time()
+print(dt)
+print(dt_start)

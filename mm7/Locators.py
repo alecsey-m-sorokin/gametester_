@@ -58,7 +58,7 @@ class APIdata_SpiritOtTheLake:
     start_users_rtp_120 = 20900  # 120%
 
     gameID = '20001'
-    userID = '422021'
+    userID = '55555'
     currency = 'EUR'
     gameKey = 'TestKey'
     betSum = '1'

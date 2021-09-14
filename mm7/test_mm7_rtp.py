@@ -62,7 +62,7 @@ def fs2(ids):
         try:
             return fs(ids)
         except Exception as e:
-            error_message = f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ================== {e}'
+            error_message = f'spin _  {str(i + 1)}  / session _ {str(r + 1)}  / userId _ {ids} \n=== ErrrrrOrrrrr === \n{e}'
             print(f'spin #  {str(i + 1)}  / session # {str(r + 1)}  / userId # {ids} =================== Errrrrooooooooooooooooooorrrrrrr ===================', e)
             Reddy(toReddy=True, gameLine='mm7').send_message2reddy(error_message)
 
@@ -99,10 +99,10 @@ def fs(ids):
 
     while r < sessions:  # выставляем количество раундов (сессий)
         fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
+        fileName = f'logs/gameId _{A.gameID} userId _{A.userID} session _{r + 1} {dt}.json'
         log = Logger(fileName, toFile=False, toConsole=True)
         print2 = log.printml
-        print2('\n')
-        print2('round # %s' % str(r + 1))
+        print2(f'\nround # {str(r + 1)}')
         regToken = api.tps(ids, rtp)
         # logging.info(f'Thread {ids}: starting')
         # regToken = regToken[0]

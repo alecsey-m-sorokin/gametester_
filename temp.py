@@ -5,7 +5,7 @@ import datetime
 import time
 
 from mm6.Locators import APIdata_MancalaQuest
-from mm6.MancalaQuest_Page import RTP, API_MancalaQuest, print2file, write_data_to_json_file
+from mm6.MancalaQuest_Page import RTP, API_MancalaQuest, print2file, write_data_to_json_file, Logger, Reddy
 
 
 def findall(v, k):
@@ -76,6 +76,10 @@ print(currentRTP)
 dt = '{}'.format(datetime.datetime.today().strftime("%d-%m-%Y %H-%M-%S"))
 # fileName = 'logs/' + 'gameId _%s userId _%s session _%s -' % (A.gameID, A.userID, r + 1) + ' {}.json'.format(dt)
 
+i = 0
+r = 0
+ids = 555
+
 try:
     with open('c:/testing/cd_bad.json') as json_file:
         response = json.load(json_file)
@@ -86,9 +90,14 @@ try:
         print2file('!!!.txt', response)
         # write_data_to_json_file('errors', response)
 
+
 except Exception as xxx:
     print('Exception = ', xxx)
     # print2file('exceptions.txt', str(xxx))
+    # error_message = f'spin _ {str(i + 1)}  / session _ {str(r + 1)}  / userId _ {ids} \n=== ErrrrrOrrrrr === \n{xxx}'
+    # print(error_message)
+    # Reddy(toReddy=True, gameLine='mm7').send_message2reddy(error_message)
+
 
 # with open('c:/testing/cd_bad.json') as json_file:
 #     response = json.load(json_file)
