@@ -189,7 +189,7 @@ text_bot = f'Тест закончен \n UserId = {A.userID} \n Количес�
            f' Общая сумма ставок = {sum(globalBets) * coin} \n Общая сумма выигрыша = {round(sum(globalWins), 2)}'
 
 
-Reddy(toReddy=True, gameLine='mm7').send_message2reddy(text_bot_2)
+Reddy(toReddy=True, gameLine='mm8').send_message2reddy(text_bot_2)
 
 
 if __name__ == "__main__":

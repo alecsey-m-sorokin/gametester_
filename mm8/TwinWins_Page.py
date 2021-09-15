@@ -305,6 +305,8 @@ class API_TwinWins:
         'printAR' =
         'oak_l' =
          """
+        totalFreeSpinsCount = 0
+        remainingFreeSpinsCount = 0
         HASH = hashlib.md5(('GetAsyncResponse/' + RegToken + TokenAsync + A.gameKey).encode('utf-8')).hexdigest()
         print('--- GetAsyncResponse : -------------------------------------------------------------------------------')
         print('hash_GetAsyncResponse = ', HASH)
@@ -338,12 +340,16 @@ class API_TwinWins:
             print("Response =", response)
             resultId = response['ResultId']
             spinId = response["SpinResult"]["Id"]
-            if response["GameFreeSpins"] is not None:
-                totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
-                remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
-            else:
+            if 'GameFreeSpins' not in response:
                 totalFreeSpinsCount = 0
                 remainingFreeSpinsCount = 0
+            else:
+                if response["GameFreeSpins"]:
+                    totalFreeSpinsCount = response["GameFreeSpins"][0]["TotalFreeSpinsCount"]
+                    remainingFreeSpinsCount = response["GameFreeSpins"][0]["RemainingFreeSpinsCount"]
+                else:
+                    totalFreeSpinsCount = 0
+                    remainingFreeSpinsCount = 0
             print("Response =", response)
             print("ResultId =", resultId)
             print("SpinId =", spinId)
