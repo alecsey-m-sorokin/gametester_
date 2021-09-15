@@ -22,7 +22,7 @@ def gameParser():
     parser.add_argument('--sessions', type=int, default=100)
     parser.add_argument('--rounds', type=int, default=200)
     parser.add_argument('--rtp', type=int, default=A.partnerID_rtp_95)
-    parser.add_argument('--users', type=int, default=599)
+    parser.add_argument('--users', type=int, default=30)
     return parser
 
 

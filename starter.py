@@ -3,6 +3,7 @@ import argparse
 from subprocess import call
 from subprocess import Popen
 import os
+from mm4.Locators import APIdata_mm4
 from mm5.Locators import APIdata_PortalMaster
 from mm6.Locators import APIdata_MancalaQuest
 from mm7.Locators import APIdata_SpiritOtTheLake
@@ -10,6 +11,7 @@ from mm8.Locators import APIdata_TwinWins
 from xspin.Locators import APIdata_xspin
 
 
+A_mm4 = APIdata_mm4
 A_mm5 = APIdata_PortalMaster
 A_mm6 = APIdata_MancalaQuest
 A_mm7 = APIdata_SpiritOtTheLake
@@ -21,6 +23,13 @@ r = 0
 def gameParser():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest='command')
+
+    mm4 = subparsers.add_parser('mm4')
+    mm4.add_argument('--strategy', default='basic')
+    mm4.add_argument('--sessions', type=int, default=1)
+    mm4.add_argument('--rounds', type=int, default=10)
+    mm4.add_argument('--rtp', type=int, default=A_mm4.partnerID)
+    mm4.add_argument('--users', type=int, default=1)
 
     mm5 = subparsers.add_parser('mm5')
     mm5.add_argument('--strategy', default='basic')
@@ -65,8 +74,29 @@ def gameParser():
 gameParams = gameParser()
 namespace = gameParams.parse_args(sys.argv[1:])
 
+if namespace.command == "mm4":
+    print('using', sys.argv[0])
+    print(namespace)
+    print(f'command = {namespace.command}')
+    print(f'strategy = {namespace.strategy}')
+    print(f'sessions = {namespace.sessions}')
+    print(f'rounds = {namespace.rounds}')
+    print(f'rtp (partnerId) = {namespace.rtp}')
+    print(f'users = {namespace.users}')
 
-if namespace.command == "mm5":
+    if namespace.strategy == 'fs':
+        os.system(f'python {A_mm4.fileName_fs} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'basic':
+        os.system(f'python {A_mm4.fileName_basic} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds}')
+
+    elif namespace.strategy == 'rtp':
+        os.system(f'python {A_mm4.fileName_rtp} --strategy {namespace.strategy} --sessions {namespace.sessions} --rounds {namespace.rounds} --rtp {namespace.rtp} --users {namespace.users}')
+
+    else:
+        print("Что-то пошло не так...")
+
+elif namespace.command == "mm5":
     print('using', sys.argv[0])
     print(namespace)
     print(f'strategy = {namespace.strategy}')
